@@ -1,0 +1,209 @@
+// date 9.13
+// Author likeby;
+//
+
+.hotel_list{
+  width: 100%;
+  height: 100%;
+  @include flexbox(flex);
+  @include flex-direction(column);
+  .header{
+    width: 100%;
+    background: #fff;
+    @include border(0 0 1px 0,#d9d9d9);
+    .title{
+      @include flexbox(flex);
+      height: 0.46rem;
+      li{
+        @include flex(1);
+        float: left;
+        text-align: center;
+        line-height: 0.46rem;
+        color: #888;
+        @include border(0 1px 0 0,#efeff4);
+        &:nth-of-type(1){
+          @include flexbox(flex);
+          @include justify-content(center);
+          @include align-items(center);
+          .content{
+            width: 0.78rem;
+            height: 0.3rem;
+            .days{
+              width: 0.24rem;
+              height: 100%;
+              float: left;
+              img{
+                width: 0.15rem;
+                display: block;
+              }
+              div{
+                font-size: 0.09rem;
+                height: 0.09rem;
+                line-height: 0.09rem;
+                margin-top: 0.06rem;
+              }
+            }
+            .date{
+              width: 0.48rem;
+              height: 100%;
+              margin-top: 0.02rem;
+              float: left;
+              font-size: 10px;
+              line-height: 10px;
+              div{
+                height: 30%;
+
+              }
+            }
+          }
+        }
+        &:nth-of-type(2){
+          color:#09bb07;
+          i{
+            transform: rotate(180deg);
+          }
+
+        }
+        i{
+          transform: translateY(-3px);
+        }
+
+      }
+    }
+    .filter-list{
+      height: 1.71rem;
+      background: #fff;
+      z-index: 100;
+      @include box-sizing(border-box);
+      padding: 0 0.1rem;
+      width: 100%;
+      position: absolute;
+      li{
+        height: 0.3rem;
+        width: 100%;
+        color: #888888;
+        line-height: 0.3rem;
+        @include border(0 0 1px 0,#efeff4);
+        .fa{
+          color: #09bb07;
+          float: right;
+          height: 100%;
+          line-height: .3rem;
+          display: block;
+        }
+      }
+    }
+    .filter-by-logo{
+      height: 1.71rem;
+      background: #fff;
+      z-index: 100;
+      @include box-sizing(border-box);
+      padding: 0 0.1rem;
+      width: 100%;
+      position: absolute;
+      @include flexbox(flex);
+      @include flex-direction(column);
+      .title{
+        height: 0.29rem;
+        line-height: 0.29rem;
+        color: #888;
+        padding: 0.09rem;
+      }
+      ul{
+        @include flex(1);
+        width: 100%;
+        @include flexbox(flex);
+        overflow: hidden;
+        .actived{
+          @include border(1px,#09bb07);
+          color: #09bb07;
+        }
+        li{
+          width: 0.7rem;
+          height: 0.5rem;
+          float: left;
+          text-align: center;
+          line-height: 0.5rem;
+          color: #888;
+          @include border(1px,#d9d9d9);
+          margin-left:0.06rem;
+          &:nth-of-type(1){
+            margin: 0;
+          }
+          img{
+            width: 100%;
+          }
+        }
+      }
+    }
+    .buttons{
+      text-align: center;
+      height: 0.5rem;
+      @include flexbox(flex);
+      @include align-items(center);
+      span{
+        display: inline-block;
+        @include flex(1);
+      }
+      .weui_btn_mini {
+        padding: 0 0.4rem;
+      }
+      .default{
+        background: #7a7e83;
+      }
+    }
+  }
+  .footer{
+    margin-top: 0.05rem;
+    background: #fff;
+    @include flex(1);
+    width: 100%;
+    padding-bottom: 0.1rem;
+    overflow-y: scroll;
+    ul{
+      li{
+        padding: 0.08rem 0.1rem;
+        height: 0.71rem;
+        @include flexbox(flex);
+        .membrane{
+          width: 3.55rem;
+          height: 100%;
+          position: absolute;
+          z-index: 1;
+        }
+        img{
+          // height: 100%;
+          width: 0.9rem;
+        }
+        .content{
+          @include flex(1);
+          text-indent: 0.12rem;
+          font-size: 0.12rem;
+          position: relative;
+          p{
+            width: 100%;
+            color: #3d4248;
+            font-size: 0.09rem;
+            &:nth-of-type(1){
+              font-size: 0.14rem;
+            }
+            &:nth-of-type(5){
+              position: absolute;
+              text-align: right;
+              text-indent: 0.1rem;
+              bottom: 0.05rem;
+              right: 0;
+              span{
+                color: #ef6e22;
+                font-size: 0.14rem;
+                &:nth-of-type(1){
+                  font-size: 12px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

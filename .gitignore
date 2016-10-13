@@ -1,5 +1,4 @@
-# Object file
-*.o
-
-# Ada Library Information
-*.ali
+/mobile/node_modules
+/mobile/dist/*
+/mobile/bower_components
+*DS_Store

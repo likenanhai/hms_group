@@ -1,0 +1,162 @@
+// Date 9.12;
+// Author likeby;
+
+
+.home3{
+  width: 100%;
+  height: 100%;
+   @include flexbox(flex);
+   @include flex-direction(column);
+   .banner{
+     .swiper-pagination-bullet{
+       background: rgba(255,255,255,1);
+       opacity: 1;
+     }
+     .swiper-pagination-bullet-active{
+       background: rgb(9,187,7);
+     }
+   }
+  .section{
+    height:auto;
+    @include flexbox(flex);
+    @include flex-direction(column);
+    @include box-sizing(border-box);
+    padding: .2rem 0.1rem;
+    width:100%;
+    background: rgb(255,255,255);
+    margin-top: 0.05rem;
+    .select-date{
+      height: 0.5rem;
+      width: 100%;
+      text-align: center;
+      font-size:.18rem;
+      @include flexbox(flex);
+      .stay,.leave{
+        @include flex(1);
+        @include flexbox(flex);
+        @include flex-direction(column);
+        height: 100%;
+        color:rgb(9,187,7);
+        .title{
+          color: rgb(202,202,202);
+        }
+        .date{
+          @include flex(1);
+          width: 100%;
+        }
+      }
+      .days{
+        width: 0.6rem;
+        height: 100%;
+        font-size:0.12rem;
+        color:rgb(61,66,72);
+        @include flexbox(flex);
+        @include flex-direction(column);
+        .vertical{
+          @include flex(1);
+          background: rgb(200,200,200);
+          width: 0.01rem;
+          margin: 0.04rem auto;
+        }
+        .center{
+          border:.01rem solid rgb(200,200,200);
+          border-radius: 0.15rem;
+        }
+      }
+    }
+  }
+
+  .select-city{
+    @include box-sizing(border-box);
+    width: 100%;
+    // height: 0.92rem;
+    padding: 0 .1rem;
+    background: #fff;
+    margin-top:0.05rem;
+    .title{
+      padding:0.14rem;
+      i{
+        float: right;
+        font-size: 0.18rem;
+        -webkit-transition: transform .3s ease-in;
+        -moz-transition: transform .3s ease-in;
+        -ms-transition: transform .3s ease-in;
+        transition: transform .3s ease-in;
+      }
+      .rotate{
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+      }
+
+    }
+    .citys{
+      @include border(2px 0 2px 0,#efeff4);
+      @include flexbox(flex);
+      justify-content: space-between;
+      padding: 0.09rem 0;
+      li{
+        float: left;
+        width: 0.63rem;
+        height: 0.28rem;
+        line-height: 0.28rem;
+        text-align: center;
+        @include border(1px,#bcbbbb,solid,4px);
+      }
+    }
+  }
+  .footer{
+    background: #fff;
+    @include flex(1);
+    width: 100%;
+    height: 100%;
+    padding-bottom: 0.1rem;
+    overflow: scroll;
+    ul{
+      li{
+        padding: 0.08rem 0.1rem;
+        height: 0.71rem;
+        @include flexbox(flex);
+        .membrane{
+          width: 3.55rem;
+          height: 100%;
+          position: absolute;
+          z-index: 100;
+        }
+        img{
+          width: 0.9rem;
+        }
+        .content{
+          @include flex(1);
+          text-indent: 0.12rem;
+          font-size: 0.12rem;
+          position: relative;
+          p{
+            width: 100%;
+            color: #3d4248;
+            font-size: 0.09rem;
+            &:nth-of-type(1){
+              font-size: 0.14rem;
+            }
+            &:nth-of-type(5){
+              position: absolute;
+              text-align: right;
+              text-indent: 0.1rem;
+              bottom: 0.05rem;
+              right: 0;
+              span{
+                color: #ef6e22;
+                font-size: 0.14rem;
+                &:nth-of-type(1){
+                  font-size: 12px;
+                }
+              }
+
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,100 @@
+
+// date 2016-9-8
+// likey
+
+#app{
+  width: 100%;
+  height: 100%;
+  font-family: "微软雅黑";
+  overflow: hidden;
+}
+.city-list{
+  width: 100%;
+  height: 100%;
+  @include flexbox(flex);
+  @include flex-direction(column);
+  .header{
+    background: #fff;
+    width: 100%;
+    .weui_search_bar{
+      background: #fff;
+    }
+    .weui_search_text,.weui_search_focusi{
+      background: rgb(222,222,225);
+    }
+    .tabs{
+      width: 100%;
+      height: 0.45rem;
+      line-height: 0.45rem;
+      text-align: center;
+      @include flexbox(flex);
+      position: relative;
+      .tab{
+        @include flex(1);
+        height: 100%;
+        @include box-sizing(borderbox);
+        .under-line{
+          width: 100%;
+          height:.03rem;
+          background: #6ecd6e;
+          position: relative;
+          bottom: .03rem;
+        }
+      }
+      .tab:first-child{
+        border-right: 1px solid #e6e6ea;
+      }
+
+    }
+    .tabs::after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width:100%;
+      border: 1px solid #e6e6ea;
+      transform: scaleY(.5);
+    }
+  }
+  .recommend{
+    width: 100%;
+    margin: .05rem 0;
+    background: #fff;
+    text-align: center;
+    .title{
+      color: #4a4f54;
+      font-size: .15rem;
+      padding: .1rem;
+      position: relative;
+    }
+    .title::after{
+      position: absolute;
+      content: '';
+      width: 94%;
+      border: 1px solid #f3f3f7;
+      transform: scaleY(.5);
+      bottom: 0;
+      left: 3%;
+    }
+    .content{
+      padding: .15rem;
+      @include flexbox(flex);
+      justify-content: space-between;
+      .care{
+        width: .65rem;
+        height: .3rem;
+        line-height: .3rem;
+        border: 1px solid #e5e5e5;
+        border-radius: .03rem;
+
+      }
+    }
+  }
+
+  .section{
+    @include flex(1);
+    width: 100%;
+    background: #fff;
+    overflow: hidden;
+    
+  }
+}
