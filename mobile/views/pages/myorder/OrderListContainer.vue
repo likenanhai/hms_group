@@ -73,37 +73,56 @@
             position: relative;
             font-family: '微软雅黑';
             font-size: .15rem;
-            padding: .115rem 0;
-            label {
-                font-weight: bold;
-            }
-            span {
-                margin-left: .06rem;
-                font-size: .1rem;
-                color: #ec5800
-            }
-            span:nth-child(3) {
-                font-size: .15rem;
-                margin-left: .05rem;
-            }
-            .weui_btn {
-                text-align: center;
-                display: inline-block;
-                width: 1rem;
-                height: .36rem;
-                top: .05rem;
-                font-size: .16rem;
+            padding: 5px 0;
+
+            box-sizing: border-box;
+            div:nth-child(1) {
+              display: inline-block;
+              line-height: .36rem;
+              label {
+                  font-weight: bold;
+                  font-size: .15rem;
+                  // &:after {
+                  //   content: '.';
+                  //   width: 0;
+                  //   height: 0;
+                  //   clear: both;
+                  //   visibility: hidden;
+                  //   display: block;
+                  // }
+              }
+              span {
+                  margin-left: .06rem;
+                  font-size: .1rem;
+                  color: #ec5800;
+              }
+              span:nth-child(3) {
+                  font-size: .15rem;
+                  margin-left: .05rem;
+              }
             }
             .button {
-          		letter-spacing: 1px;
-          		line-height: .36rem;
-          		height: .36rem;
+              margin-left: 5px;
+              letter-spacing: 1px;
+              line-height: .36rem;
+              text-align: center;
           		width: 1rem;
-          		text-align: center;
           		font-size: .16rem;
           		font-family: '微软雅黑';
           		border-radius: 5px;
           		display: inline-block;
+              float: right;
+              color: white;
+              &.comment_btn {
+                border: 1px solid #09BB07;
+                color: #09BB07
+              }
+              &.check_btn {
+                background-color: #09BB07;
+              }
+              &.pay_btn {
+                background-color:#EC5800;
+              }
           	}
             // .button {
             //     position: absolute;
@@ -198,9 +217,13 @@
                     </div>
                 </div>
                 <div class="list-bottom clearfix">
-                    <label>订单总额：</label><span>¥</span><span>{{item.actualPrice}}</span>
-                    <span class="button">评价晒单</span>
-                    <span class="button">查看订单</span>
+                    <div>
+                      <label>订单总额：</label><span>¥</span><span>{{item.actualPrice}}</span>
+                    </div>
+                    <span class="button check_btn" v-if='item.status != 1'>查看订单</span>
+                    <span class="button comment_btn" v-if='item.status == 8'>评价晒单</span>
+                    <span class="button pay_btn" v-if='item.status == 1'>支付订单</span>
+                    <!-- <div class="clearfloat"></div> -->
                 </div>
             </li>
         </ul>
