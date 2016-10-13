@@ -79,7 +79,7 @@ export default {
     },
     handerfindHotel(){
       if(this.searchbar_value === ''){
-        this.$dispatch("toastError","请输入您要查询的地址")
+        this.$dispatch("toastError","请输入您要查询的地址");
       }else {
         const userSelection ={
           orderData:{
@@ -88,10 +88,14 @@ export default {
             checkInDate : this.stayDay,
             checkOutDate : this.leaveDay,
             night : this.total_days
+          },
+          hotelMessages:{
+            address:this.searchbar_value, //查询地址
           }
         }
-        this.ac_setOrderData(orderData);
-        // this.$router.go('/hotel_list');
+        this.ac_setOrderData(userSelection.orderData);
+        this.setHotelMessages(userSelection.hotelMessages);
+        this.$router.go('/hotel_list');
       }
     },
     handledialog(){
@@ -104,7 +108,6 @@ export default {
     stayDay(newVal) {
       if(new Date(newVal).getTime() < new Date().getTime()){
         this.stayDay = moment(new Date().getTime() + 10000).format("YYYY-MM-DD");
-        console.log(this.stayDay + '_____');
       }
       if(new Date(this.stayDay).getTime() >= new Date(this.leaveDay).getTime()){
         let _leaveDay = new Date(this.stayDay).getTime() + 86400 * 1000;

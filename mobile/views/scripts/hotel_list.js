@@ -25,7 +25,7 @@ const sequence_items = [
 import {
   Toast,Button,ButtonArea
 } from 'vue-weui';
-
+import { Common } from './common.js';
 // 引入vuex
 // import store from '../../vuex/store.js' ;
 import { getStates } from '../../vuex/getters.js';
@@ -39,20 +39,18 @@ export default {
       checked_index: 0,
       loading:false,
       filter_active: 0, //按品牌名筛选中被选中的品牌高亮的下标状态
-      url:api+"/api/hotels?groupId="+this.userSelection.orderData.groupId,
-      options: {
-        method:"hotel.list",
-        bizContent:{
-          groupId:this.userSelection.orderData.groupId,
-          checkInDate: this.userSelection.orderData.checkInDate,
-          checkOutDate: this.userSelection.orderData.checkOutDate,
-          // address: '',
-          // page:1,
-          // pageSize:20,
-          // sort:'default',
-          // brands:'',
-          // city:'',
-        }
+      url:api+"/api/hotels",
+      brandsUrl:api+"/api/home?groupId="+this.userSelection.orderData.groupId,
+      req: {
+        groupId:this.userSelection.orderData.groupId,
+        checkInDate: this.userSelection.orderData.checkInDate,
+        checkOutDate: this.userSelection.orderData.checkOutDate,
+        sort:'default',
+        address: this.userSelection.hotelMessages.address,
+        // page:1,
+        // pageSize:20,
+        brands: this.userSelection.hotelMessages.selected_brand,
+        // city:'',
       },
       hotel_list:{
         data:{
@@ -60,7 +58,7 @@ export default {
         }
       },
       publicState: {
-        brands: this.getBrands,       //品牌列表 数据来自home页面
+        brands: [],       //品牌列表 数据来自home页面
       },
       brands:[],
     };
@@ -80,10 +78,10 @@ export default {
   },
   ready() {
     console.log(this.userSelection);
-    if(this.selectedBrands.id){
-      this.options.bizContent.brands = this.selectedBrands.id;
-    };
-    this.getHotelList(this.url);
+    // if(this.selectedBrands.id){
+    //   this.options.bizContent.brands = this.selectedBrands.id;
+    // };
+    this.getHotelList(this.url+Common.reqString(this.req),this.brandsUrl+Common.reqString(this.req.groupId));
   },
   attached() {
 
@@ -109,8 +107,7 @@ export default {
         //让被选中的品牌高亮
         const vm = this;
         for (var k in this.publicState.brands) {
-          // console.log(k);
-          if (vm.options.bizContent.brands == this.publicState.brands[k].id) {
+          if (vm.req.brands == this.publicState.brands[k].id) {
             console.log(typeof(k)+k);
             vm.filter_active = parseInt(k) +1;
           }
@@ -118,16 +115,22 @@ export default {
       }
     },
     // 获取酒店列表 并把获取到的酒店列表传给 vm.hotel_list;
-    getHotelList:function(url){
+    getHotelList:function(url,urlA){
       var vm  = this;
       vm.loading = true;
       this.$http.get(url).then(function(res){
-        console.log(res);
+        console.log(JSON.parse(res.body));
         vm.hotel_list = JSON.parse(res.body);
         vm.loading = false;
         vm.filter_list = 0;
-        console.log(res);
       });
+      if(urlA){
+        this.$http.get(urlA).then((res) => {
+          console.log(JSON.parse(res.body));
+          vm.publicState.brands = JSON.parse(res.body).items.brands;
+          console.log(vm.publicState);
+        });
+      }
     },
     // selectHotel
     selectHotel(event){
@@ -144,17 +147,17 @@ export default {
     handelSequence:function(event,checked_index){
       console.log(event.target.getAttribute("sort"));
       this.checked_index = checked_index;
-      this.options.bizContent.sort = event.target.getAttribute("sort");
+      this.req.sort = event.target.getAttribute("sort");
     },
     //点击选择不同的筛选方式
     handerFilter:function(event,checked_index){
       this.filter_active = parseInt(checked_index) + 1;
-      this.options.bizContent.brands = event.target.getAttribute('data-id');
+      this.req.brands = event.target.getAttribute('data-id');
     },
     // 重置按钮 点击事件
     handelReset:function(){
       if(  document.getElementsByClassName('filter-by-logo').length === 0){
-        this.options.bizContent.sort = "default";
+        this.req.sort = "default";
         this.checked_index = 0;
       }
       else{
@@ -163,8 +166,7 @@ export default {
     },
     // 确定按钮 点击事件
     handelConfirm:function(){
-      console.log(this.options);
-      this.getHotelList(this.url,this.options);
+      // this.getHotelList(this.url+);
     },
 
   },

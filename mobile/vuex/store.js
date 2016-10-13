@@ -12,14 +12,8 @@ Vue.use(Vuex);
 const state = {
   userSelection:{
     // 订单信息
-    hotelMesseges: {    //用户帅选酒店列表的信息
-      brands: [{
-        id: '',
-        name: '',
-        logo: '',
-      }],
-      selected_brand:{     //zaihome页面中被选中的品牌
-      },
+    hotelMessages: {    //用户帅选酒店列表的信息
+      selected_brand:'' ,   //zaihome页面中被选中的品牌
       address:'',   //选择的地址
     },
     orderData : {
@@ -89,8 +83,8 @@ const mutations = {
   },
 
   // 保存用户对酒店的选择
-  saveHotelMessages(state,setHotelMessages){
-    Object.assign(state.userSelection.hotelMesseges,setHotelMessages);
+  setHotelMessages(state,setHotelMessages){
+    Object.assign(state.userSelection.hotelMessages,setHotelMessages);
   },
 };
 
