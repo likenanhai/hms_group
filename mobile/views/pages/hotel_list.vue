@@ -36,7 +36,7 @@
         </ul>
         <div class="buttons">
           <span></span>
-          <button :mini="true" :class="options.bizContent.sort" @click="handelReset">重置</button>
+          <button :mini="true" :class="req.sort" @click="handelReset">重置</button>
           <span></span>
           <button :mini="true" @click="handelConfirm">确认</button>
           <span></span>

@@ -143,4 +143,19 @@
       width: 0.8rem;
     }
   }
+  .weui_toast {
+		width: 1.25rem;
+		height: 1.4rem;
+		margin-left: 0;
+		transform: translateX(-50%);
+		.icon_toast {
+	        margin: 22px 0 10px;
+	        display: block;
+	        font-size: .4rem;
+	    }
+		.weui_toast_content {
+				font-size: .16rem;
+				padding: 0 12px;
+		}
+	}
 }
