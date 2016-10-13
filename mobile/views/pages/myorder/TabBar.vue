@@ -46,20 +46,20 @@
 
 <template>
   <ul class="tab-bar ThemeBgColor">
-    <li :class="{ curTab: tabtype == 'all' }">
-      <a href="javascript:void(0);" @click="tabtype = 'all'">全部</a>
+    <li :class="{ curTab: tabtype == 0 }">
+      <a href="javascript:void(0);" @click="tabtype = 0">全部</a>
     </li>
-    <li :class="{ curTab: tabtype == 'pending_pay' }">
-      <a href="javascript:void(0);" @click="tabtype = 'pending_pay'">待支付</a>
+    <li :class="{ curTab: tabtype == 1 }">
+      <a href="javascript:void(0);" @click="tabtype = 1">待支付</a>
     </li>
-    <li :class="{ curTab: tabtype == 'pending_checkin' }">
-      <a href="javascript:void(0);" @click="tabtype = 'pending_checkin'">待入住</a>
+    <li :class="{ curTab: tabtype == 2 }">
+      <a href="javascript:void(0);" @click="tabtype = 2">待入住</a>
     </li>
-    <li :class="{ curTab: tabtype == 'complete' }">
-      <a href="javascript:void(0);" @click="tabtype = 'complete'">已完成</a>
+    <li :class="{ curTab: tabtype == 8 }">
+      <a href="javascript:void(0);" @click="tabtype = 8">已完成</a>
     </li>
-    <li :class="{ curTab: tabtype == 'refund' }">
-      <a href="javascript:void(0);" @click="tabtype = 'refund'">已退款</a>
+    <li :class="{ curTab: tabtype == 7 }">
+      <a href="javascript:void(0);" @click="tabtype = 7">已退款</a>
     </li>
   </ul>
 </template>
@@ -67,13 +67,13 @@
 <script>
   export default {
     props: {
-      // tabtype: {
-      //   type: String,
-      // },
+      tabtype: {
+        type: Number,
+      },
     },
     data() {
       return {
-        tabtype: 'all'
+
       };
     },
 

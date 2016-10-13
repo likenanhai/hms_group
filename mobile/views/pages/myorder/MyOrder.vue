@@ -4,6 +4,9 @@
       height: 100vh;
       background-color: #EFEFF4;
    }
+  //  #app {
+  //    overflow: auto;
+  //  }
 </style>
 <template>
   <div class="cover">
@@ -18,30 +21,31 @@
   import TabBar from './/TabBar';
   import { Toast } from 'vue-weui';
   import OrderListContainer from './OrderListContainer';
-
+  import {getStates} from '../../../vuex/getters.js';
+  import { Common } from '../../scripts/common.js';
   const orders = {
-    all: {
-      page: 0,
+    0: {
+      page: 1,
       showLoadMore: false,
       items: [],
     },
-    pending_pay: {
-      page: 0,
+    1: {
+      page: 1,
       showLoadMore: false,
       items: [],
     },
-    pending_checkin: {
-      page: 0,
+    2: {
+      page: 1,
       showLoadMore: false,
       items: [],
     },
-    complete: {
-      page: 0,
+    8: {
+      page: 1,
       showLoadMore: false,
       items: [],
     },
-    refund: {
-      page: 0,
+    7: {
+      page: 1,
       showLoadMore: false,
       items: [],
     },
@@ -51,9 +55,22 @@
     data() {
       return {
         orders,
-        curType: 'all',
+        curType: 0,
         isRequest: false,
         showLoading: false,
+        reqAll: {
+          groupId: this.userSelection.orderData.groupId,
+          userId: this.userSelection.orderData.userId,
+          page: 1,
+          pageSize : 10
+        },
+        reqOther: {
+          groupId: this.userSelection.orderData.groupId,
+          userId: this.userSelection.orderData.userId,
+          page: 1,
+          pageSize : 10,
+          Status: Number
+        },
       };
     },
 
@@ -75,22 +92,29 @@
         this.isRequest = true;
         this.showLoading = true;
         const _this = this;
-
-        this.$http.get('', ajaxData, {
-          emulateJSON: true,
-        }).then(({ status, data }) => {
-          if (status === 200 && data.error_code === 0) {
+        const ajaxReqData = Common.reqString(ajaxData);
+        //console.log(ajaxData);
+        this.$http.get(api+'/api/orders' + ajaxReqData)
+        .then(({ status, body }) => {
+          //console.log(body);
+          const data = JSON.parse(body);
+          //if (status === 200 && data.error_code === 0) {
             // 请求成功
-            const tmpType = ajaxData.Status;
-            const { rows } = data.data;
-            if (rows.length > 0) {
-              _this.orders[tmpType].page = ajaxData.page;
-              _this.orders[tmpType].items = _this.orders[tmpType].items.concat(rows);
+            let tmpType ;
+            if (ajaxData.Status == undefined) {
+              tmpType = 0;
+            }else {
+              tmpType = ajaxData.Status;
             }
-            _this.orders[tmpType].showLoadMore = rows.length >= 10;
-          } else if (status === 200 && data.error_code === -1) {
-            this.showError(data.error_msg);
-          }
+            if (data.total > 0) {
+              _this.orders[tmpType].page = ajaxData.page;
+              _this.orders[tmpType].items = _this.orders[tmpType].items.concat(data.items);
+            }
+            console.log(data.total);
+            _this.orders[tmpType].showLoadMore = data.total >= 10;
+          // } else if (status === 200 && data.error_code === -1) {
+          //   this.showError(data.error_msg);
+          // }
           _this.isRequest = false;
           _this.showLoading = false;
         }).catch(() => {
@@ -101,10 +125,14 @@
     },
     events: {
       loadMore() {
-        this.getData({
-          page: this.orders[this.curType].page + 1,
-          Status: this.curType,
-        });
+        orders[this.curType].page++;
+        if (this.curType == 0) {
+          this.reqAll.page = orders[this.curType].page;
+          this.getData(this.reqAll);
+        }else {
+          this.reqOther.page = orders[this.curType].page;
+          this.getData(this.reqOther);
+        }
       },
     },
     route: {
@@ -122,29 +150,36 @@
         next();
       },
     },
-    // ready() {
-    //   if (this.curOrders.length === 0) {
-    //     this.getData({
-    //       page: 1,
-    //       Status: this.curType,
-    //     });
-    //   }
-
-    //   this.$watch('curType', (newVal) => {
-    //     if (this.curOrders.length === 0) {
-    //       this.getData({
-    //         page: this.orders[newVal].page + 1,
-    //         Status: newVal,
-    //       });
-    //     }
-    //   });
-    // },
+    ready() {
+      if (this.curOrders.length === 0) {
+        this.getData(this.reqAll);
+      }
+      this.$watch('curType', (newVal) => {
+        this.reqOther.Status = newVal;
+        //console.log(this.curOrders.length);
+        if (this.curOrders.length === 0) {
+          if (newVal == 0) {
+            this.getData(this.reqAll);
+          }else {
+            this.getData(this.reqOther);
+          }
+        }
+      });
+    },
 
     components: {
       TabBar,
       Toast,
        OrderListContainer,
-     
     },
+    vuex: {
+			getters :{
+				userSelection: getStates.getUserSelection,
+
+			},
+			actions :{
+				//setOrderData,
+			}
+		},
   };
 </script>

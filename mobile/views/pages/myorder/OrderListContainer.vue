@@ -94,23 +94,34 @@
                 top: .05rem;
                 font-size: .16rem;
             }
-            .comment_button {
-                position: absolute;
-                right: 1.05rem;
-                border: 1px solid #09BB07;
-                width: 1rem;
-                line-height: .36rem;
-                height: .36rem;
-            }
-            .check_button {
-                position: absolute;
-                right: 0rem;
-                width: 1rem;
-                height: .36rem;
-                line-height: .36rem;
-                top: -.1rem;
-                background-color: #09BB07
-            }
+            .button {
+          		letter-spacing: 1px;
+          		line-height: .36rem;
+          		height: .36rem;
+          		width: 1rem;
+          		text-align: center;
+          		font-size: .16rem;
+          		font-family: '微软雅黑';
+          		border-radius: 5px;
+          		display: inline-block;
+          	}
+            // .button {
+            //     position: absolute;
+            //     right: 1.05rem;
+            //     border: 1px solid #09BB07;
+            //     width: 1rem;
+            //     line-height: .36rem;
+            //     height: .36rem;
+            // }
+            // .button {
+            //     position: absolute;
+            //     right: 0rem;
+            //     width: 1rem;
+            //     height: .36rem;
+            //     line-height: .36rem;
+            //     top: -.1rem;
+            //     background-color: #09BB07
+            // }
         }
     }
 }
@@ -154,73 +165,58 @@
 }
 </style>
 <template>
-    <div class="order-list-container">
+    <div class="order-list-container" v-if="orders.length > 0">
         <ul>
-            <li>
+            <li v-for="item in orders">
                 <div class="list-top">
-                    <span>圣淘沙（马家龙店）</span>
-                    <span class="order-status">
-            待支付</span>
+                    <span>{{item.name}}</span>
+                    <!-- OrderType: 1=待支付 2=待入住 3=已入住 4=已拒绝 5=已取消(系统)
+                          6=已取消(租户), 7=已退款  8=已完成 9=待退款 10=待确认 -->
+                    <span class="order-status" v-if='item.status == 1'>待付款</span>
+                    <span class="order-status" v-if='item.status == 2'>待入住</span>
+                    <span class="order-status" v-if='item.status == 3'>已入住</span>
+                    <span class="order-status" v-if='item.status == 4'>已拒绝</span>
+                    <span class="order-status" v-if='item.status == 5'>已取消</span>
+                    <span class="order-status" v-if='item.status == 6'>已取消</span>
+                    <span class="order-status" v-if='item.status == 7'>已退款</span>
+                    <span class="order-status" v-if='item.status == 8'>已完成</span>
+                    <span class="order-status" v-if='item.status == 9'>待退款</span>
+                    <span class="order-status" v-if='item.status == 10'>待确认</span>
                 </div>
                 <div class="flex list-center">
                     <div class="flex-item order-detail">
                         <div>
-                            <label>订单号</label><span>18:30</span></div>
+                            <label>订单号</label><span>{{item.id}}</span></div>
                         <div>
-                            <label>入住时间</label><span>袁德帅</span></div>
+                            <label>入住时间</label><span>{{dateFormat(item.checkInDate)}} ~ {{dateFormat(item.checkOutDate)}}</span></div>
                         <div>
-                            <label>房型</label><span>188-8888-8888</span></div>
+                            <label>房型</label><span>{{item.room.type}}</span></div>
                         <div>
-                            <label>数量</label><span>18:30</span></div>
+                            <label>数量</label><span>{{item.room.orderNum}} 间</span></div>
                         <div>
-                            <label>下单时间</label><span>袁德帅</span></div>
+                            <label>下单时间</label><span>{{orderTimeFormat(item.date)}}</span></div>
                     </div>
                 </div>
                 <div class="list-bottom clearfix">
-                    <label>订单总额：</label><span>¥</span><span>189</span>
-                    <button class="weui_btn weui_btn_plain_primary comment_button" type="weui_btn_plain_primary">评价晒单</button>
-                    <button class="weui_btn check_button">查看订单</button>
-                </div>
-            </li>
-            <li>
-                <div class="list-top">
-                    <span>圣淘沙（马家龙店）</span>
-                    <span class="order-status">
-            待支付</span>
-                </div>
-                <div class="flex list-center">
-                    <div class="flex-item order-detail">
-                        <div>
-                            <label>订单号</label><span>18:30</span></div>
-                        <div>
-                            <label>入住时间</label><span>袁德帅</span></div>
-                        <div>
-                            <label>房型</label><span>188-8888-8888</span></div>
-                        <div>
-                            <label>数量</label><span>18:30</span></div>
-                        <div>
-                            <label>下单时间</label><span>袁德帅</span></div>
-                    </div>
-                </div>
-                <div class="list-bottom clearfix">
-                    <label>订单总额：</label><span>¥</span><span>189</span>
-                    <button class="weui_btn weui_btn_plain_primary comment_button" type="weui_btn_plain_primary">评价晒单</button>
-                    <button class="weui_btn check_button">查看订单</button>
+                    <label>订单总额：</label><span>¥</span><span>{{item.actualPrice}}</span>
+                    <span class="button">评价晒单</span>
+                    <span class="button">查看订单</span>
                 </div>
             </li>
         </ul>
         <btn-load-more v-if='showLoadMore' id="btn-loadmore"></btn-load-more>
     </div>
-    <!-- <div class="no-order" v-else>
-    <div class="no-order-icon"><i class="fa fa-file-text-o"></i></div>
-    <p>暂无此类订单</p>
-    <a href="booking" class="weui_btn weui_btn_mini weui_btn_primary BtnColor">预定房间</a>
-  </div> -->
+    <div class="no-order" v-else>
+      <div class="no-order-icon"><i class="fa fa-file-text-o"></i></div>
+      <p>暂无此类订单</p>
+      <a href="booking" class="weui_btn weui_btn_mini weui_btn_primary BtnColor">预定房间</a>
+    </div>
 </template>
 
 <script>
 import moment from 'moment';
 import BtnLoadMore from './BtnLoadMore';
+import {getStates} from '../../../vuex/getters.js';
 import {
     Button
 } from 'vue-weui';
@@ -238,12 +234,12 @@ export default {
         orderTime() {},
     },
     methods: {
-        getCheckDate(time) {
-            return moment(time * 1000).format('YYYY-MM-DD');
+        dateFormat(time) {
+            return moment(time).format('YYYY年MM月DD日');
         },
 
-        getOrderTime(time) {
-            return moment(time * 1000).format('YYYY-MM-DD HH:mm');
+        orderTimeFormat(time) {
+            return moment(time).format('YYYY年MM月DD日 HH:SS');
         },
 
         scrollEvent() {
@@ -254,6 +250,7 @@ export default {
             timeout = setTimeout(() => {
                 if (btn.offsetTop - body.scrollTop - window.innerHeight + btn.clientHeight <= 0 && btn.clientHeight !== 0) {
                     this.$dispatch('loadMore');
+                    console.log('loadMore');
                 }
             }, 100);
         },
@@ -271,5 +268,14 @@ export default {
         BtnLoadMore,
         Button,
     },
+    vuex: {
+			getters :{
+				userSelection: getStates.getUserSelection,
+
+			},
+			actions :{
+				//setOrderData,
+			}
+		},
 };
 </script>
