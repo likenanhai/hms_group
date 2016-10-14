@@ -2,7 +2,7 @@
   <iscroll>
     <home>
       <div class="position">
-        <label for="">目的地</label>
+        <label for="">城市</label>
         <input type="text" placeholder="请输入您的目的地" v-model="city" >
         <i class="fa fa-angle-right" ></i>
         <div class="get-position">
