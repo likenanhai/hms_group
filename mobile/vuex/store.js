@@ -13,7 +13,8 @@ const state = {
   userSelection:{
     // 订单信息
     hotelMessages: {    //用户帅选酒店列表的信息
-      selected_brand:'' ,   //zaihome页面中被选中的品牌
+      selected_brand:'' ,   //zaihome页面中被选中的品牌,
+      city:'',         //在home页面中选择的city
       address:'',   //选择的地址
     },
     orderData : {
