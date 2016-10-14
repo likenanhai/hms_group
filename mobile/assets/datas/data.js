@@ -523,6 +523,7 @@ data.orders = {
 
 data.order_details = {
     id: '111', //订单Id
+    status:1,
     name: 'lsy的酒店', //酒店名称
     hotelPhone: '15013410124', //酒店联系电话
     room: { //房型

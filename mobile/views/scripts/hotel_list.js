@@ -39,8 +39,10 @@ export default {
       checked_index: 0,
       loading:false,
       filter_active: 0, //按品牌名筛选中被选中的品牌高亮的下标状态
-      url:api+"/api/hotels",
-      brandsUrl:api+"/api/home?groupId="+this.userSelection.orderData.groupId,
+      url: {
+        home: api+'/api/home',
+        hotels: api+'/api/hotels'
+      },
       req: {
         groupId:this.userSelection.orderData.groupId,
         checkInDate: this.userSelection.orderData.checkInDate,
@@ -78,10 +80,25 @@ export default {
   },
   ready() {
     console.log(this.userSelection);
+    const vm = this;
     // if(this.selectedBrands.id){
     //   this.options.bizContent.brands = this.selectedBrands.id;
     // };
-    this.getHotelList(this.url+Common.reqString(this.req),this.brandsUrl+Common.reqString(this.req.groupId));
+    let reqHome = {groupId:this.req.groupId},
+        reqHotels = {
+          groupId: this.req.groupId,
+          checkInDate: this.req.stayDay,
+          checkOutDate: this.req.leaveDay
+        }
+    Common.resource("get",this.url.home,reqHome,(data) => {
+      vm.publicState.brands = data.items.banners;
+      console.log(vm.publicState.brands);
+    });
+    Common.resource("get",this.url.hotels,reqHotels,(data) =>{
+      vm.hotel_list = data;
+      vm.loading = false;
+      vm.filter_list = 0;
+    });
   },
   attached() {
 
@@ -115,7 +132,7 @@ export default {
       }
     },
     // 获取酒店列表 并把获取到的酒店列表传给 vm.hotel_list;
-    getHotelList:function(url,urlA){
+    getHotelList:function(url,req,urlA){
       var vm  = this;
       vm.loading = true;
       this.$http.get(url).then(function(res){

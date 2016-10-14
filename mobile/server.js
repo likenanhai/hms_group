@@ -60,7 +60,7 @@ router.post('/api/orders',(req,res) => {
 });
 
 // 获取订单详情
-router.get('/api/orders/:orderIds',(req,res) => {
+router.get('/api/orderDetail',(req,res) => {
   console.log("获取订单详情");
   console.log(req.query);
   res.json(Data.order_details);

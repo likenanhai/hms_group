@@ -203,14 +203,14 @@
 </style>
 <template>
 	<div class="cover">
-		<!-- <p id="head_success" v-if='Status == 1'><i class="fa fa-check-circle" aria-hidden="true"></i><span>订单提交成功</span></p> -->
-		<div id="head_other" v-if='Status != 1'>
+		<p id="head_success"><i class="fa fa-check-circle" aria-hidden="true"></i><span>订单提交成功</span></p>
+		<!-- <div id="head_other" v-if='Status != 1'>
 			<div>
 				<p>{{Title}}</p>
 				<p>亲，我们等待您的到来</p>
 				<p v-if='Status == 2'>您可点击下方点评按钮对我们客服进行评价</p>
 			</div>
-		</div>
+		</div> -->
 		<div class="height"><label>酒店名称</label><span>{{userSelection.orderData.hotelName}}</span></div>
 		<div class="way"><i class="fa fa-phone" aria-hidden="true"></i><span>联系酒店</span><i class="fa fa-map-marker" aria-hidden="true"></i><span>导航过去</span></div>
 		<div class="detail">
@@ -239,18 +239,13 @@
 <script>
 
 import {getStates} from '../../vuex/getters.js';
-import { Common } from '../scripts/common.js';
 	export default {
 		data() {
 			return {
 				//1成功 2已完成 3待付款 4其他
 				Status:3,
 				Title:'',
-				BtnMsg:'支付',
-				req: {
-					orderId:this.userSelection.message.orderId,
-					groupId:this.userSelection.orderData.groupId
-				},
+				BtnMsg:'支付'
 			};
 		},
 		methods: {
@@ -259,12 +254,7 @@ import { Common } from '../scripts/common.js';
 				},
 		},
 		ready() {
-			console.log(this.req);
-			const ajaxparams = Common.reqString(this.req);
-			this.$http.get(api+'/api/orderDetail'+ ajaxparams)
-				.then((res) => {
-						
-				});
+			console.log(this.userSelection.orderData.room[0].type);
 		},
 		components:{
 
@@ -272,9 +262,10 @@ import { Common } from '../scripts/common.js';
 		vuex: {
 			getters :{
 				userSelection: getStates.getUserSelection,
+
 			},
 			actions :{
-				//setMessages,
+				//setOrderData,
 			}
 		},
 	}
