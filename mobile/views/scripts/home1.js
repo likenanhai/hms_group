@@ -12,6 +12,7 @@ import {
 } from 'vue-weui';
 // 引入公共js
 import moment from "moment";
+import { Common } from "./common.js";
 // 引入vuex;
 
 import { setOrderData,setHotelMessages } from '../../vuex/actions.js';
@@ -31,7 +32,7 @@ export default {
       stayDay: new Date().toISOString().substr(0,10),
       leaveDay: new Date( new Date().setDate(new Date().getDate()+1)).toISOString().substr(0,10),
       total_days:'',
-      url: api+'/api/home?groupId=100&ueserId="userId"',
+      url: api+'/api/home',
       home:{
         data:{
           items:[],
@@ -62,15 +63,6 @@ export default {
       var days_stamp = endDay_date.getTime() - startDay_date.getTime();
       var days = (days_stamp/1000/60/60/24);
       return days;
-    },
-    getData:function(url,req){
-      var vm = this;
-      this.$http.get(url).then((data) => {
-        const _data = JSON.parse(data.body);
-        vm.images = _data.items.banners;
-        vm.home = _data;
-        // vm.ac_getBrands(vm.home.data.items.brands);
-      });
     },
     // 选择品牌
     selectBrand:function(brands){
@@ -117,7 +109,6 @@ export default {
     },
     leaveDay(newVal){
       if(new Date(this.stayDay).getTime() >= new Date(newVal).getTime()){
-        console.log("change");
         let _leaveDay = new Date(this.stayDay).getTime() + 86400 * 1000;
         this.leaveDay = moment(_leaveDay).format('YYYY-MM-DD');
       }
@@ -134,19 +125,15 @@ export default {
   },
   ready() {
     var _this = this;
-    this.getData(this.url,this.req);
-    // 计算入住时间
-    //科学的日期选择
-    const dateComponents = document.getElementsByClassName('date-components');
+    let req = {
+      groupId:this.groupId,
+    };
+    //初始化数据，
+    Common.resource("get",this.url,req,function(obj){
+      _this.home = obj;
+      _this.images = obj.items.banners;
+    });
     this.total_days = this.getDays(this.stayDay,this.leaveDay);
-    var date_input = document.getElementsByClassName("date-components");
-    date_input[0].onchange = function(){
-      _this.total_days = _this.getDays(_this.stayDay,_this.leaveDay);
-    };
-    date_input[1].onchange = function(){
-      _this.total_days = _this.getDays(_this.stayDay,_this.leaveDay);
-    };
-
   },
   vuex: {
     getters: {

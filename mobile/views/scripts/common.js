@@ -2,6 +2,7 @@
 
 // 公共方法
 //
+import Vue from "vue" ;
 
 export const Common = {
   // 把 yyyy-MM-dd  HH:mm:ss 转换成相应格式的函数
@@ -33,7 +34,22 @@ export const Common = {
     return reqString;
   },
 
-
+  resource(methods,url,req,callback){
+    switch (methods) {
+      case 'get':
+        Vue.http.get(url+this.reqString(req)).then(res => {
+          callback(JSON.parse(res.body));
+        });
+        break;
+      case "post":
+        Vue.http.post(url,req).then(res => {
+          callback(JSON.parse(res.body));
+        });
+        break;
+      default:
+    }
+  }
 };
+
 
 //
