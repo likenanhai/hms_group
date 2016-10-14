@@ -81,7 +81,8 @@ export default {
     // if(this.selectedBrands.id){
     //   this.options.bizContent.brands = this.selectedBrands.id;
     // };
-    this.getHotelList(this.url+Common.reqString(this.req),this.brandsUrl+Common.reqString(this.req.groupId));
+
+    this.getHotelList(this.url,Common.reqString(this.req),this.brandsUrl+Common.reqString(this.req.groupId));
   },
   attached() {
 
@@ -115,7 +116,7 @@ export default {
       }
     },
     // 获取酒店列表 并把获取到的酒店列表传给 vm.hotel_list;
-    getHotelList:function(url,urlA){
+    getHotelList:function(url,req,urlA){
       var vm  = this;
       vm.loading = true;
       this.$http.get(url).then(function(res){

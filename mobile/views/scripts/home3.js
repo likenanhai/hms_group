@@ -10,6 +10,7 @@ import CityList from "../../components/city-list.vue";
 
 // 引入公共方法
 import moment from "moment";
+import { Common } from "./common.js";
 //引入vuex数据
 import {
     setOrderData
@@ -18,24 +19,20 @@ import {
 export default {
     data() {
             return {
+                groupId: "groupId",
+                userId: 'userId',
                 images: [],
                 options: {
-                    pagination: '.swiper-pagination',
+                  pagination: '.swiper-pagination',
                 },
                 today: new Date().getDate(),
                 stayDay: new Date().toISOString().substr(0, 10),
                 leaveDay: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().substr(0, 10),
                 total_days: '',
                 show_cities: false,
-                url: [api+'/api/home?groupId=100', api+'/api/hotels?groupId=100'],
-                // req
-                req: {
-                    method: 'home',
-                    groupId: '',
-                },
-                reqHotelList: {
-                    method: 'hotel.list',
-                    groupId: ''
+                url: {
+                  home: api+'/api/home',
+                  hotels: api+'/api/hotels'
                 },
                 // res
                 cities: {
@@ -60,10 +57,19 @@ export default {
         },
         computed: {},
         ready() {
-            var _this = this;
-            this.getBanner(this.url[0]);
-            this.getHotelList(this.url[1]);
-
+            var vm = this;
+            let reqHome = {groupId:this.groupId},
+                reqHotels = {
+                  groupId: this.groupId,
+                  checkInDate: this.stayDay,
+                  checkOutDate: this.leaveDay
+                }
+            Common.resource("get",this.url.home,reqHome,(data) => {
+              vm.images = data.items.banners;
+            });
+            Common.resource("get",this.url.hotels,reqHotels,(data) =>{
+              vm.hotel_list = data;
+            })
             //计算入住日期
             this.total_days = home1_vm.methods.getDays(this.stayDay, this.leaveDay);
         },
@@ -72,7 +78,6 @@ export default {
           stayDay(newVal) {
             if(new Date(newVal).getTime() < new Date().getTime()){
               this.stayDay = moment(new Date().getTime() + 10000).format("YYYY-MM-DD");
-              console.log(this.stayDay + '_____');
             }
             if(new Date(this.stayDay).getTime() >= new Date(this.leaveDay).getTime()){
               let _leaveDay = new Date(this.stayDay).getTime() + 86400 * 1000;
