@@ -16,6 +16,7 @@ import City_list from './views/pages/city_list.vue';
 import Hotel_list from './views/pages/hotel_list.vue';
 import Room_list from './views/pages/room_list.vue';
 import OrderPay from './views/pages/OrderPay.vue';
+import OrderResult from './views/pages/OrderResult.vue';
 import MyOrder from './views/pages/myorder/MyOrder.vue';
 import OrderDetail from './views/pages/OrderDetail.vue';
 import PayDetail from './views/pages/PayDetail.vue';
@@ -57,6 +58,10 @@ var router = new Router();
     // 进入订单
     '/orderpay':{
       component: OrderPay
+    },
+    // 订单结果
+    '/order_result':{
+      component: OrderResult
     },
     // 我的订单
     '/my_order':{

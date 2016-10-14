@@ -23,6 +23,11 @@ export const setHotelMessages = function({dispatch},setData){
   dispatch("setHotelMessages",setData);
 }
 
+// 用户选择的订单id
+export const setMessages = function({dispatch},setData){
+  dispatch("setMessages",setData);
+}
+
 
 
 

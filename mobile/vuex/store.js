@@ -51,6 +51,7 @@ const state = {
     // message
     message:{
       address:'',
+      orderId:'111', //订单ID
     },
     //订单价格
     orderPrice: {
@@ -85,6 +86,11 @@ const mutations = {
   // 保存用户对酒店的选择
   setHotelMessages(state,setHotelMessages){
     Object.assign(state.userSelection.hotelMessages,setHotelMessages);
+  },
+
+  // 保存用户查看订单的id
+  setMessages(state,setOrderId){
+    Object.assign(state.userSelection.message,setOrderId);
   },
 };
 
