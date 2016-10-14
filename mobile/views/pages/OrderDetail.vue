@@ -204,27 +204,33 @@
 <template>
 	<div class="cover">
 		<!-- <p id="head_success" v-if='Status == 1'><i class="fa fa-check-circle" aria-hidden="true"></i><span>订单提交成功</span></p> -->
-		<div id="head_other" v-if='Status != 1'>
+		<div id="head_other">
 			<div>
-				<p>{{Title}}</p>
-				<p>亲，我们等待您的到来</p>
-				<p v-if='Status == 2'>您可点击下方点评按钮对我们客服进行评价</p>
+				<p v-if='orderDetail.status ==7'>已退款</p>
+				<p v-if='orderDetail.status ==7'>亲，您的款项已退还，敬请查收。</p>
+				<p v-if='orderDetail.status ==8'>已完成</p>
+				<p v-if='orderDetail.status ==8'>亲，欢迎您再次入住本酒店，</p>
+				<p v-if='orderDetail.status ==8'>您可点击下方点评按钮对我们客服进行评价。</p>
+				<p v-if='orderDetail.status ==2'>待入住</p>
+				<p v-if='orderDetail.status ==1'>待付款</p>
+				<p v-if='orderDetail.status ==2'>亲，我们等待您的到来</p>
+				<p v-if='orderDetail.status ==1'>亲，您有订单未支付，素素下单，我们等您45分钟</p>
 			</div>
 		</div>
-		<div class="height"><label>酒店名称</label><span>{{userSelection.orderData.hotelName}}</span></div>
+		<div class="height"><label>酒店名称</label><span>{{orderDetail.name}}</span></div>
 		<div class="way"><i class="fa fa-phone" aria-hidden="true"></i><span>联系酒店</span><i class="fa fa-map-marker" aria-hidden="true"></i><span>导航过去</span></div>
 		<div class="detail">
-			<div><label>{{userSelection.orderData.room[0].type}}</label><span>{{userSelection.orderData.room[0].orderNum}}间</span><span>共{{userSelection.orderData.night}}晚</span></div>
-			<div><label>入住时间</label><span>{{dateFormat(userSelection.orderData.checkInDate)}}~{{dateFormat(userSelection.orderData.checkOutDate)}}</span></div>
-			<div><label>到店时间</label><span>{{userSelection.orderData.arriveTime}}</span></div>
-			<div><label>入住客人</label><span>{{userSelection.orderData.name}}</span></div>
-			<div><label>联系电话</label><span>{{userSelection.orderData.phone}}</span></div>
+			<div><label>{{orderDetail.room.type}}</label><span>{{orderDetail.room.orderNum}}间</span><span>共{{orderDetail.night}}晚</span></div>
+			<div><label>入住时间</label><span>{{dateFormat(orderDetail.checkInDate)}} ~ {{dateFormat(orderDetail.checkOutDate)}}</span></div>
+			<div><label>到店时间</label><span>{{orderDetail.arriveTime.substr(11,16)}}</span></div>
+			<div><label>入住客人</label><span>{{orderDetail.userName}}</span></div>
+			<div><label>联系电话</label><span>{{orderDetail.userPhone}}</span></div>
 		</div>
 		<div class="detail pay">
-			<div><label>支付方式</label><span>{{userSelection.orderData.paymentMethod == 1 ? '微信支付' : '到店支付'}}</span></div>
+			<div><label>支付方式</label><span>{{orderDetail.paymentMethod == 1 ? '微信支付' : '到店支付'}}</span></div>
 			<div><label>使用优惠</label><span>满199减10优惠券</span></div>
-			<div><label>订单总价</label><span>¥</span><span>{{userSelection.orderData.totalPrice}}</span></div>
-			<div><label>实付总价</label><span>¥</span><span>{{userSelection.orderData.actualPrice}}</span></div>
+			<div><label>订单总价</label><span>¥</span><span>{{orderDetail.totalPrice}}</span></div>
+			<div><label>实付总价</label><span>¥</span><span>{{orderDetail.actualPrice}}</span></div>
 		</div>
 		<div class="height count_down" v-if='Status == 3'>
 			<label>订单关闭时间</label><span>45:00</span>
@@ -247,6 +253,7 @@ import { Common } from '../scripts/common.js';
 				Status:3,
 				Title:'',
 				BtnMsg:'支付',
+				orderDetail:{},
 				req: {
 					orderId:this.userSelection.message.orderId,
 					groupId:this.userSelection.orderData.groupId
@@ -255,16 +262,15 @@ import { Common } from '../scripts/common.js';
 		},
 		methods: {
 				dateFormat(date) {
-						return date.replace(/-/g, '.');
+						return date.replace(/-/g, '.').substr(0,10);
 				},
 		},
 		ready() {
-			console.log(this.req);
-			const ajaxparams = Common.reqString(this.req);
-			this.$http.get(api+'/api/orderDetail'+ ajaxparams)
-				.then((res) => {
-						
-				});
+			//初始化数据，
+			const _this = this;
+			Common.resource("get",api+'/api/orderDetail',this.req,function(obj){
+				_this.orderDetail = obj;
+			});
 		},
 		components:{
 
