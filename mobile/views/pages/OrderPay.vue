@@ -448,7 +448,7 @@ from 'vue-weui';
 				 this.$http.post(api+'/api/orders',_this.req)
 					 .then((data) => {
 						 console.log(JSON.parse(data.body));
-						 _this.$router.go('order_detail')
+						 _this.$router.go('order_result')
 						 // if (status === 200) {
 						 //   if (errorCode === 0) {
 						 //     updateFormdata({

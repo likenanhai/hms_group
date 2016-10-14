@@ -40,6 +40,9 @@
                 &.order-status {
                     float: right;
                     color: #EC5800;
+                    &.finish_status {
+                      color: #09BB07;
+                    }
                     &.status1 {
                         color: #EE6C43;
                     }
@@ -198,7 +201,7 @@
                     <span class="order-status" v-if='item.status == 5'>已取消</span>
                     <span class="order-status" v-if='item.status == 6'>已取消</span>
                     <span class="order-status" v-if='item.status == 7'>已退款</span>
-                    <span class="order-status" v-if='item.status == 8'>已完成</span>
+                    <span class="order-status" :class="{finish_status : item.status = 8}" v-if='item.status == 8'>已完成</span>
                     <span class="order-status" v-if='item.status == 9'>待退款</span>
                     <span class="order-status" v-if='item.status == 10'>待确认</span>
                 </div>
@@ -220,7 +223,7 @@
                     <div>
                       <label>订单总额：</label><span>¥</span><span>{{item.actualPrice}}</span>
                     </div>
-                    <span class="button check_btn" v-if='item.status != 1'>查看订单</span>
+                    <span class="button check_btn" @click='detailRouter(item.id)' v-if='item.status != 1'>查看订单</span>
                     <span class="button comment_btn" v-if='item.status == 8'>评价晒单</span>
                     <span class="button pay_btn" v-if='item.status == 1'>支付订单</span>
                     <!-- <div class="clearfloat"></div> -->
@@ -240,6 +243,7 @@
 import moment from 'moment';
 import BtnLoadMore from './BtnLoadMore';
 import {getStates} from '../../../vuex/getters.js';
+import {setMessages} from '../../../vuex/actions.js';
 import {
     Button
 } from 'vue-weui';
@@ -257,6 +261,11 @@ export default {
         orderTime() {},
     },
     methods: {
+        detailRouter(_orderId) {
+          this.setMessages({orderId:_orderId});
+          console.log(this.userSelection.message);
+          this.$router.go('order_detail')
+        },
         dateFormat(time) {
             return moment(time).format('YYYY年MM月DD日');
         },
@@ -297,7 +306,7 @@ export default {
 
 			},
 			actions :{
-				//setOrderData,
+				setMessages,
 			}
 		},
 };
