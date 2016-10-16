@@ -32,9 +32,6 @@ export default {
 
   },
   methods: {
-    handerfindHotel(){
-      console.log("111");
-    },
   },
   components: {
     Home,
