@@ -9,6 +9,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Resource from 'vue-resource';
 import App from './App';
+import Home from './views/pages/home.vue';
 import Home1 from './views/pages/home1.vue';
 import Home2 from './views/pages/home2.vue';
 import Home3 from './views/pages/home3.vue';
@@ -26,6 +27,7 @@ import comment_list from './views/pages/comment_list.vue';
 import HotelIntroduce from './views/pages/HotelIntroduce.vue';
 import OrderComment from './views/pages/order_comment/components/App.vue';
 // new Vue(App).$mount().$appendTo('#app');
+Vue.config.silent = true;
 
 Vue.use(Router);
 Vue.use(Resource);
@@ -36,6 +38,9 @@ var router = new Router();
       component: Home1,
     },
     // 风格2
+    '/home':{
+      component: Home,
+    },
     '/home2':{
       component: Home2,
     },
