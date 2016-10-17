@@ -233,34 +233,84 @@
 			<div><label>实付总价</label><span>¥</span><span>{{orderDetail.actualPrice}}</span></div>
 		</div>
 		<div class="height count_down" v-if='Status == 3'>
-			<label>订单关闭时间</label><span>45:00</span>
+			<label>订单关闭时间</label><span id="timer">{{min}}:{{s}}</span>
 		</div>
 		<div id="foot" v-if='Status != 1'>
 			<label v-if='Status == 3'>总价：</label><span v-if='Status == 3'>¥</span><span v-if='Status == 3'>{{userSelection.orderData.actualPrice}}</span>
 			<div><p>&nbsp<i class="fa fa-angle-up" aria-hidden="true"></i></p><span>详情</span></div>
 			<span class="button" v-if='Status == 2 || Status ==3':class='{comment: Status === 2}'>{{BtnMsg}}</span>
 		</div>
+		<toptips v-if='showTopTips'>支付超时，订单已取消</toptips>
+    <toast type='loading' v-if='isRequest'>正在提交</toast>
+    <div v-show='false' id="pay_html"></div>
 	</div>
 </template>
 <script>
-
+import { Toast, Toptips } from 'vue-weui';
 import {getStates} from '../../vuex/getters.js';
 import { Common } from '../scripts/common.js';
+
+const timer = (limitTime, callback) => {
+    const formatNum = num => num < 9 ? `0${num}` : num;
+    const interval = () => {
+      const now = parseInt(new Date().getTime() / 1000, 10);
+      const remain = parseInt(limitTime, 10) - now;
+      let min = Math.floor(remain / 60);
+      let s = remain % 60;
+      if (remain < 0) {
+        callback('00','00',false);
+				console.log('0000000000000');
+        return false;
+      }
+			min = formatNum(min);
+			s = formatNum(s);
+			callback(min+"", s+"",true);
+      setTimeout(interval, 1000);
+    };
+    interval();
+
+  };
 	export default {
 		data() {
 			return {
-				//1成功 2已完成 3待付款 4其他
-				Status:3,
-				Title:'',
-				BtnMsg:'支付',
+				showBox: false,
+				isRequest: false,
+				showTopTips: false,
+				canPay: true,
 				orderDetail:{},
 				req: {
 					orderId:this.userSelection.message.orderId,
 					groupId:this.userSelection.orderData.groupId
 				},
+				min:'45',
+				s:'00',
 			};
 		},
 		methods: {
+				paySubmit() {
+	        if (this.canPay) {
+	          if (this.isRequest) {
+	            return false;
+	          }
+
+	          this.isRequest = true;
+	          const _this = this;
+	          this.$http.post(this.curOrderData.PayUrl).then((rsp) => {
+	            if (rsp.status === 200 && rsp.data.error_code === 0) {
+	              // 请求成功
+	              $('#pay_html').innerHTML = rsp.data.data;
+	              document.forms.wxpaysubmit.submit();
+	            }
+
+	            _this.isRequest = false;
+	          }).catch(() => {
+	            _this.isRequest = false;
+	          });
+	        } else if (this.showTopTips === false) {
+	          this.showTopTips = true;
+	          setTimeout(() => this.showTopTips = false, 3000);
+	        }
+	      },
 				dateFormat(date) {
 						return date.replace(/-/g, '.').substr(0,10);
 				},
@@ -271,9 +321,22 @@ import { Common } from '../scripts/common.js';
 			Common.resource("get",api+'/api/orderDetail',this.req,function(obj){
 				_this.orderDetail = obj;
 			});
+
+			setTimeout(() => {
+
+        const $timer = $('#timer');
+        const $btnPay = $('#btn-pay');
+        timer(1476697006 + (1 * 60), (min,s,isCanPay) => {
+					_this.min = min;
+					_this.s = s
+          $btnPay.className += ' weui_btn_disabled';
+          _this.canPay = isCanPay;
+        });
+        // console.log(JSON.parse(JSON.stringify(this.curOrderData)));
+      }, 100);
 		},
 		components:{
-
+				Toast, Toptips
 		},
 		vuex: {
 			getters :{
