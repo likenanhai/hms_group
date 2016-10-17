@@ -1,6 +1,6 @@
 <template lang="html">
   <iscroll>
-    <home>
+    <home :city='city' home-style='2' >
       <div class="position">
         <label for="">城市</label>
         <input type="text" placeholder="请输入您的目的地" v-model="city" >

@@ -19,6 +19,18 @@ import { setOrderData,setHotelMessages } from '../../vuex/actions.js';
 import { getCount, } from '../../vuex/getters';
 
 export default {
+  props: {
+    city: {
+      type: String,
+      required: false,
+      default:'',
+    },
+    homeStyle: {
+      type: String,
+      required: false,
+      default: '1',
+    }
+  },
   data() {
     return {
       groupId:'groupId',
@@ -70,24 +82,42 @@ export default {
       this.$router.go('/hotel_list');
     },
     handerfindHotel(){
-      if(this.searchbar_value === ''){
-        this.$dispatch("toastError","请输入您要查询的地址");
-      }else {
-        const userSelection ={
-          orderData:{
-            groupId:this.groupId,
-            userId:this.userId,
-            checkInDate : this.stayDay,
-            checkOutDate : this.leaveDay,
-            night : this.total_days
-          },
-          hotelMessages:{
-            address:this.searchbar_value, //查询地址
-          }
+      console.log(this.city);
+      console.log(this.homeStyle);
+      if(this.homeStyle === "2"){
+        if(this.city === ''){
+          this.$dispatch('toastError',"请输入您要查找的城市");
+          return;
         }
-        this.ac_setOrderData(userSelection.orderData);
-        this.setHotelMessages(userSelection.hotelMessages);
-        this.$router.go('/hotel_list');
+        if(this.searchbar_value === ""){
+          this.$dispatch('toastError','请输入您要查询的地址');
+          return;
+        }
+        else{
+          this.setHotelMessages({city:this.city,address:this.searchbar_value});
+          this.$router.go('/hotel_list');
+        }
+      }else{
+
+        if(this.searchbar_value === '' ){
+          this.$dispatch("toastError","请输入您要查询的地址");
+        }else {
+          const userSelection ={
+            orderData:{
+              groupId:this.groupId,
+              userId:this.userId,
+              checkInDate : this.stayDay,
+              checkOutDate : this.leaveDay,
+              night : this.total_days
+            },
+            hotelMessages:{
+              address:this.searchbar_value, //查询地址
+            }
+          }
+          this.ac_setOrderData(userSelection.orderData);
+          this.setHotelMessages(userSelection.hotelMessages);
+          this.$router.go('/hotel_list');
+        }
       }
     },
     handledialog(){

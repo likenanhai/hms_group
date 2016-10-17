@@ -35,6 +35,7 @@ export const Common = {
   },
 
   resource(methods,url,req,callback){
+    console.log(req);
     switch (methods) {
       case 'get':
         Vue.http.get(url+this.reqString(req)).then(res => {

@@ -7,8 +7,6 @@ import Iscroll from './../../components/Iscroll.vue';
 import { setHotelMessages } from '../../vuex/actions.js';
 import { getUserSelection, } from '../../vuex/getters.js';
 
-console.log(Home.data);
-
 export default {
   data() {
     return {
@@ -32,9 +30,6 @@ export default {
 
   },
   methods: {
-    handerfindHotel(){
-      console.log("111");
-    },
   },
   components: {
     Home,

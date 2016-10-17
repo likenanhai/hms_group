@@ -5,6 +5,7 @@ const app = express();
 const router = new Router();
 //获取数据文件
 const Data = require('./assets/datas/data.js');
+const hotelList = require('./assets/datas/hotelList.js');
 
 // 首页数据
 router.get('/api/home', (req, res) => {
