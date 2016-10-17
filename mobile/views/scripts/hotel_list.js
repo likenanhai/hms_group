@@ -25,6 +25,9 @@ const sequence_items = [
 import {
   Toast,Button,ButtonArea
 } from 'vue-weui';
+import BtnLoadMore from '../pages/myorder/BtnLoadMore.vue';
+
+
 import { Common } from './common.js';
 // 引入vuex
 // import store from '../../vuex/store.js' ;
@@ -49,10 +52,10 @@ export default {
         checkOutDate: this.userSelection.orderData.checkOutDate,
         sort:'default',
         address: this.userSelection.hotelMessages.address,
-        // page:1,
-        // pageSize:20,
+        page:1,
+        pageSize:20,
         brands: this.userSelection.hotelMessages.selected_brand,
-        // city:'',
+        city:this.userSelection.hotelMessages.city,
       },
       hotel_list:{
         data:{
@@ -67,6 +70,13 @@ export default {
   },
   computed: {
 
+  },
+  events: {
+    bindScrollEvent(){
+      let footer = document.querySelectorAll(".footer")[0];
+      footer.removeEventListener('scroll',this.scrollEvent);
+      footer.addEventListener('scroll',this.scrollEvent);
+    },
   },
   vuex:{
     getters:{
@@ -86,15 +96,26 @@ export default {
     // };
     let reqHome = {groupId:this.req.groupId},
         reqHotels = {
-          groupId: this.req.groupId,
-          checkInDate: this.req.stayDay,
-          checkOutDate: this.req.leaveDay
+          groupId: this.userSelection.orderData.groupId,
+          checkInDate: this.userSelection.orderData.checkInDate,
+          checkOutDate: this.userSelection.orderData.checkOutDate,
+          address: this.userSelection.hotelMessages.address,
+          sort: this.req.sort,
+          pageSize: this.req.pageSize,
+          page:this.req.page,
+        }
+        if(this.req.city != ''){
+          reqHotels.city = this.userSelection.hotelMessages.city;
+        }
+        if(this.req.brands != ''){
+          reqHotels.brands = this.userSelection.hotelMessages.selected_brand;
         }
     Common.resource("get",this.url.home,reqHome,(data) => {
       vm.publicState.brands = data.items.banners;
       console.log(vm.publicState.brands);
     });
     Common.resource("get",this.url.hotels,reqHotels,(data) =>{
+      console.log(data);
       vm.hotel_list = data;
       vm.loading = false;
       vm.filter_list = 0;
@@ -104,6 +125,25 @@ export default {
 
   },
   methods: {
+    //获取参数
+    getRequest(){
+    let reqHotels = {
+        groupId: this.userSelection.orderData.groupId,
+        checkInDate: this.userSelection.orderData.checkInDate,
+        checkOutDate: this.userSelection.orderData.checkOutDate,
+        address: this.userSelection.hotelMessages.address,
+        sort: this.req.sort,
+        pageSize: this.req.pageSize,
+        page:this.req.page,
+      }
+      if(this.req.city != ''){
+        reqHotels.city = this.userSelection.hotelMessages.city;
+      }
+      if(this.req.brands != ''){
+        reqHotels.brands = this.userSelection.hotelMessages.selected_brand;
+      }
+      return reqHotels;
+    },
     // 选择不同的过滤器
     select_filter:function(event){
       var filters = document.getElementsByClassName('filter');
@@ -131,25 +171,6 @@ export default {
         }
       }
     },
-    // 获取酒店列表 并把获取到的酒店列表传给 vm.hotel_list;
-    getHotelList:function(url,req,urlA){
-      var vm  = this;
-      vm.loading = true;
-      this.$http.get(url).then(function(res){
-        console.log(JSON.parse(res.body));
-        vm.hotel_list = JSON.parse(res.body);
-        vm.loading = false;
-        vm.filter_list = 0;
-      });
-      if(urlA){
-        this.$http.get(urlA).then((res) => {
-          console.log(JSON.parse(res.body));
-          vm.publicState.brands = JSON.parse(res.body).items.brands;
-          console.log(vm.publicState);
-        });
-      }
-    },
-    // selectHotel
     selectHotel(event){
       const userSelection = {
         orderData:{
@@ -183,11 +204,39 @@ export default {
     },
     // 确定按钮 点击事件
     handelConfirm:function(){
-      // this.getHotelList(this.url+);
+      this.req.page = 1;
+      console.log(this.getRequest());
     },
+    scrollEvent(){
+      let btn = document.querySelectorAll('#btn-load-more')[0];
+      let footer = document.querySelectorAll('.footer')[0];
+
+      if(footer.scrollTop + footer.clientHeight >= btn.offsetTop - 4  && btn.clientHeight !== 0){
+        this.loadMore();
+      }
+      // if(!!timeout){
+      //   clearTimeout(timeout);
+      // }
+      // let timeout = setTimeout(() => {
+      //   if(footer.scrollTop + footer.clientHeight >= btn.offsetTop - 4  && btn.clientHeight !== 0){
+      //     // console.log(footer.scrollTop+','+ footer.clientHeight);
+      //     // console.log(btn.offsetTop);
+      //     // console.log(btn.offsetHeight);
+      //     console.log(btn.offsetTop - (footer.scrollTop + footer.clientHeight));
+      //   }
+      // }, 100);
+    },
+    loadMore(){
+      const vm = this;
+      this.req.page += 1;
+      Common.resource('get',this.url.hotels,this.getRequest(),(data) => {
+      this.hotel_list.items = this.hotel_list.items.concat(data.items);
+        console.log(vm.hotel_list);
+      });
+    }
 
   },
   components: {
-    Toast,Button,ButtonArea
+    Toast,Button,ButtonArea,BtnLoadMore,
   }
 };

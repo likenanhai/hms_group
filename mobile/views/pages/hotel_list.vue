@@ -80,6 +80,7 @@
           </div>
         </li>
       </ul>
+      <btn-load-more id="btn-load-more"></btn-load-more>
     </div>
     <!-- 加载图标 -->
       <toast type="loading" v-if="loading" ></toast>

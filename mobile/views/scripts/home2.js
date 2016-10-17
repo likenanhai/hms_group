@@ -7,8 +7,6 @@ import Iscroll from './../../components/Iscroll.vue';
 import { setHotelMessages } from '../../vuex/actions.js';
 import { getUserSelection, } from '../../vuex/getters.js';
 
-console.log(Home.data);
-
 export default {
   data() {
     return {
