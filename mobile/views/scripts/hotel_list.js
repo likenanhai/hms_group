@@ -40,7 +40,7 @@ export default {
       filter_list: 1,
       sequence_items:sequence_items,
       checked_index: 0,
-      loading:false,
+      loading:true,
       filter_active: 0, //按品牌名筛选中被选中的品牌高亮的下标状态
       url: {
         home: api+'/api/home',
@@ -112,10 +112,8 @@ export default {
         }
     Common.resource("get",this.url.home,reqHome,(data) => {
       vm.publicState.brands = data.items.banners;
-      console.log(vm.publicState.brands);
     });
     Common.resource("get",this.url.hotels,reqHotels,(data) =>{
-      console.log(data);
       vm.hotel_list = data;
       vm.loading = false;
       vm.filter_list = 0;
@@ -205,7 +203,14 @@ export default {
     // 确定按钮 点击事件
     handelConfirm:function(){
       this.req.page = 1;
-      console.log(this.getRequest());
+      const req = this.getRequest();
+      const vm = this;
+      Common.resource("get",this.url.hotels,req,(data) => {
+        vm.hotel_list = data;
+        vm.loading = false;
+        vm.filter_list = 0;
+
+      })
     },
     scrollEvent(){
       let btn = document.querySelectorAll('#btn-load-more')[0];
@@ -214,24 +219,14 @@ export default {
       if(footer.scrollTop + footer.clientHeight >= btn.offsetTop - 4  && btn.clientHeight !== 0){
         this.loadMore();
       }
-      // if(!!timeout){
-      //   clearTimeout(timeout);
-      // }
-      // let timeout = setTimeout(() => {
-      //   if(footer.scrollTop + footer.clientHeight >= btn.offsetTop - 4  && btn.clientHeight !== 0){
-      //     // console.log(footer.scrollTop+','+ footer.clientHeight);
-      //     // console.log(btn.offsetTop);
-      //     // console.log(btn.offsetHeight);
-      //     console.log(btn.offsetTop - (footer.scrollTop + footer.clientHeight));
-      //   }
-      // }, 100);
     },
     loadMore(){
-      const vm = this;
-      this.req.page += 1;
-      Common.resource('get',this.url.hotels,this.getRequest(),(data) => {
-      this.hotel_list.items = this.hotel_list.items.concat(data.items);
-        console.log(vm.hotel_list);
+        const vm = this;
+        vm.loading = true;
+        this.req.page += 1;
+        Common.resource('get',this.url.hotels,this.getRequest(),(data) => {
+        vm.hotel_list.items = vm.hotel_list.items.concat(data.items);
+        vm.loading = false;
       });
     }
 
