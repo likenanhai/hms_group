@@ -77,13 +77,17 @@
 		border-bottom: 1px solid #DBDBDC;
 		font-weight: bold;
 	}
+	a {
+		color: inherit;
+		display: inline-block;
+	}
 	.way i{
 		margin-left: .46rem;
 		color: #09BB07;
 		font-size: .13rem
 	}
 	.way i:nth-child(3){
-		margin-left: 1.2rem;
+		margin-left: 1.15rem;
 	}
 	.way span{
 		margin-left: .05rem;
@@ -218,7 +222,7 @@
 			</div>
 		</div>
 		<div class="height"><label>酒店名称</label><span>{{orderDetail.name}}</span></div>
-		<div class="way"><i class="fa fa-phone" aria-hidden="true"></i><span>联系酒店</span><i class="fa fa-map-marker" aria-hidden="true"></i><span>导航过去</span></div>
+		<div class="way"><i class="fa fa-phone" aria-hidden="true"></i><a :href='"tel:"+orderDetail.hotelPhone'><span>联系酒店</span></a><i class="fa fa-map-marker" aria-hidden="true"></i><span>导航过去</span></div>
 		<div class="detail">
 			<div><label>{{orderDetail.room.type}}</label><span>{{orderDetail.room.orderNum}}间</span><span>共{{orderDetail.night}}晚</span></div>
 			<div><label>入住时间</label><span>{{dateFormat(orderDetail.checkInDate)}} ~ {{dateFormat(orderDetail.checkOutDate)}}</span></div>
@@ -232,13 +236,14 @@
 			<div><label>订单总价</label><span>¥</span><span>{{orderDetail.totalPrice}}</span></div>
 			<div><label>实付总价</label><span>¥</span><span>{{orderDetail.actualPrice}}</span></div>
 		</div>
-		<div class="height count_down" v-if='Status == 3'>
+		<div class="height count_down" v-if='orderDetail.status == 1'>
 			<label>订单关闭时间</label><span id="timer">{{min}}:{{s}}</span>
 		</div>
-		<div id="foot" v-if='Status != 1'>
-			<label v-if='Status == 3'>总价：</label><span v-if='Status == 3'>¥</span><span v-if='Status == 3'>{{userSelection.orderData.actualPrice}}</span>
+		<div id="foot">
+			<label v-if='orderDetail.status == 1'>总价：</label><span v-if='orderDetail.status == 1'>¥</span><span v-if='orderDetail.status == 1'>{{userSelection.orderData.actualPrice}}</span>
 			<div><p>&nbsp<i class="fa fa-angle-up" aria-hidden="true"></i></p><span>详情</span></div>
-			<span class="button" v-if='Status == 2 || Status ==3':class='{comment: Status === 2}'>{{BtnMsg}}</span>
+			<span class="button" v-if='orderDetail.status == 1' @click='paySubmit'>支付</span>
+			<span class="button comment" v-if='orderDetail.status == 8' >去点评</span>
 		</div>
 		<toptips v-if='showTopTips'>支付超时，订单已取消</toptips>
     <toast type='loading' v-if='isRequest'>正在提交</toast>
@@ -259,7 +264,6 @@ const timer = (limitTime, callback) => {
       let s = remain % 60;
       if (remain < 0) {
         callback('00','00',false);
-				console.log('0000000000000');
         return false;
       }
 			min = formatNum(min);
@@ -287,30 +291,30 @@ const timer = (limitTime, callback) => {
 			};
 		},
 		methods: {
-				paySubmit() {
-	        if (this.canPay) {
-	          if (this.isRequest) {
-	            return false;
-	          }
+			paySubmit() {
+        if (this.canPay) {
+          if (this.isRequest) {
+            return false;
+          }
 
-	          this.isRequest = true;
-	          const _this = this;
-	          this.$http.post(this.curOrderData.PayUrl).then((rsp) => {
-	            if (rsp.status === 200 && rsp.data.error_code === 0) {
-	              // 请求成功
-	              $('#pay_html').innerHTML = rsp.data.data;
-	              document.forms.wxpaysubmit.submit();
-	            }
+          this.isRequest = true;
+          const _this = this;
+          this.$http.post(this.curOrderData.PayUrl).then((rsp) => {
+            if (rsp.status === 200 && rsp.data.error_code === 0) {
+              // 请求成功
+              $('#pay_html').innerHTML = rsp.data.data;
+              document.forms.wxpaysubmit.submit();
+            }
 
-	            _this.isRequest = false;
-	          }).catch(() => {
-	            _this.isRequest = false;
-	          });
-	        } else if (this.showTopTips === false) {
-	          this.showTopTips = true;
-	          setTimeout(() => this.showTopTips = false, 3000);
-	        }
-	      },
+            _this.isRequest = false;
+          }).catch(() => {
+            _this.isRequest = false;
+          });
+        } else if (this.showTopTips === false) {
+          this.showTopTips = true;
+          setTimeout(() => this.showTopTips = false, 3000);
+        }
+      },
 				dateFormat(date) {
 						return date.replace(/-/g, '.').substr(0,10);
 				},
@@ -326,7 +330,7 @@ const timer = (limitTime, callback) => {
 
         const $timer = $('#timer');
         const $btnPay = $('#btn-pay');
-        timer(1476697006 + (1 * 60), (min,s,isCanPay) => {
+        timer(1476758159 + (45 * 60), (min,s,isCanPay) => {
 					_this.min = min;
 					_this.s = s
           $btnPay.className += ' weui_btn_disabled';

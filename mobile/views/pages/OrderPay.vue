@@ -281,7 +281,7 @@
 			<div @click="showPayDatail"><p>&nbsp<i class="fa fa-angle-up" aria-hidden="true"></i></p><span>详情</span></div>
 			<span class="button submit_btn" @click='submitOrder'>提交订单</span>
 		</div>
-		<pay-Detail :detail="OrderDetail" :show="payDetailShow"></pay-Detail>
+		<pay-Detail :detail="OrderDetail" :show="payDetailShow" :total-price="req.actualPrice" ></pay-Detail>
 		<div v-show="toast.toastShow">
       <div class="weui_mask_transparent"></div>
       <div class="weui_toast">
@@ -320,6 +320,7 @@ from 'vue-weui';
 	export default {
 		data() {
 			return {
+				test:1,
 				payDetailShow:false,
 				req: this.getUserSelection.orderData,
 				FormData :{
@@ -393,6 +394,8 @@ from 'vue-weui';
 							let data = JSON.parse(res.body);
 							_this.req.totalPrice = data.totalPrice + data.paymentDiscount;
 							_this.req.actualPrice = data.totalPrice;
+							console.log(data.totalPrice);
+							console.log(_this.req.actualPrice);
 							_this.OrderDetail = data.dailyPriceList;
 							//_this.OrderDetail[0].date = _this.OrderDetail[0].date.replace(/\-/g,'.');
 		          // if (status === 200) {

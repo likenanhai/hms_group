@@ -224,7 +224,7 @@
                       <label>订单总额：</label><span>¥</span><span>{{item.actualPrice}}</span>
                     </div>
                     <span class="button check_btn" @click='detailRouter(item.id)' v-if='item.status != 1'>查看订单</span>
-                    <span class="button comment_btn" v-if='item.status == 8'>评价晒单</span>
+                    <span class="button comment_btn" v-if='item.status == 8'>{{item.bComment == 0 ? '评价晒单' : '已点评'}}</span>
                     <span class="button pay_btn" v-if='item.status == 1'>支付订单</span>
                     <!-- <div class="clearfloat"></div> -->
                 </div>
