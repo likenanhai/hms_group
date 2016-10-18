@@ -111,7 +111,8 @@ export default {
           reqHotels.brands = this.userSelection.hotelMessages.selected_brand;
         }
     Common.resource("get",this.url.home,reqHome,(data) => {
-      vm.publicState.brands = data.items.banners;
+      vm.publicState.brands = data.items.brands;
+      console.log(vm.publicState.brands);
     });
     Common.resource("get",this.url.hotels,reqHotels,(data) =>{
       vm.hotel_list = data;
