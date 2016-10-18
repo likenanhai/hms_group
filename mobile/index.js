@@ -26,6 +26,7 @@ import Register from './views/pages/member/Register.vue';
 import comment_list from './views/pages/comment_list.vue';
 import HotelIntroduce from './views/pages/HotelIntroduce.vue';
 import OrderComment from './views/pages/order_comment/components/App.vue';
+import calendarTest from './views/pages/calendar-test.vue';
 // new Vue(App).$mount().$appendTo('#app');
 Vue.config.silent = true;
 
@@ -54,52 +55,57 @@ var router = new Router();
     },
     // 酒店列表
     '/hotel_list':{
-      component: Hotel_list
+      component: Hotel_list,
     },
     // 房型列表
     '/room_list':{
-      component: Room_list
+      component: Room_list,
     },
     // 进入订单
     '/orderpay':{
-      component: OrderPay
+      component: OrderPay,
     },
     // 订单结果
     '/order_result':{
-      component: OrderResult
+      component: OrderResult,
     },
     // 我的订单
     '/my_order':{
-      component: MyOrder
+      component: MyOrder,
     },
     //订单详情
     '/order_detail':{
-      component: OrderDetail
+      component: OrderDetail,
     },
     // 支付细节
     '/pay_detail':{
-      component: PayDetail
+      component: PayDetail,
     },
     //会员中心
     '/member':{
-      component: Member
+      component: Member,
     },
     //注册会员
     '/register':{
-      component: Register
+      component: Register,
     },
     // 酒店简介
     '/hotel_introduce':{
-      component: HotelIntroduce
+      component: HotelIntroduce,
     },
     //点评列表
     '/comment_list':{
-      component: comment_list
+      component: comment_list,
     },
     //订单点评
     '/order_comment':{
-      component: OrderComment
+      component: OrderComment,
     },
+    //日历测试
+    '/calendarTest': {
+      component: calendarTest,
+    },
+
   });
 
   router.redirect({ '/':'/home1' });
