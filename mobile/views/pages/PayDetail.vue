@@ -36,8 +36,8 @@ font-family: '微软雅黑'
 
 .body {
 font-size: 3.8vw;
-border-top: 1px solid rgba(255,255,255,.7);
-border-bottom: 1px solid rgba(255,255,255,.7);
+border-top: 1px solid #757778;
+border-bottom: 1px solid #757778;
 color: #bfbfbf;
 font-weight: normal;
 height: 66vh;

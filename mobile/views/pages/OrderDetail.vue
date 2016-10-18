@@ -1,4 +1,7 @@
 <style scoped>
+	* {
+		box-sizing: border-box;
+	}
 	.cover {
 	    position: fixed;
 	    z-index: 1;
@@ -152,6 +155,7 @@
 		font-family: '微软雅黑';
 		font-size: .17rem;
 		padding-left: .12rem;
+		padding-right: .12rem;
 		height: 9.9vh;
 	}
 
@@ -190,7 +194,7 @@
 		background-color:#EC5800;
 		border-radius: 3px;
 		position: absolute;
-		right: .4rem;
+		right: .28rem;
 		margin-top: .12rem;
 		line-height: .36rem;
 		font-size: .16rem;
@@ -224,7 +228,7 @@
 		<div class="height"><label>酒店名称</label><span>{{orderDetail.name}}</span></div>
 		<div class="way"><i class="fa fa-phone" aria-hidden="true"></i><a :href='"tel:"+orderDetail.hotelPhone'><span>联系酒店</span></a><i class="fa fa-map-marker" aria-hidden="true"></i><span>导航过去</span></div>
 		<div class="detail">
-			<div><label>{{orderDetail.room.type}}</label><span>{{orderDetail.room.orderNum}}间</span><span>共{{orderDetail.night}}晚</span></div>
+			<div><label>{{orderDetail.room[0].roomTypeName}}</label><span>{{orderDetail.room[0].count}}间</span><span>共{{orderDetail.night}}晚</span></div>
 			<div><label>入住时间</label><span>{{dateFormat(orderDetail.checkInDate)}} ~ {{dateFormat(orderDetail.checkOutDate)}}</span></div>
 			<div><label>到店时间</label><span>{{orderDetail.arriveTime.substr(11,16)}}</span></div>
 			<div><label>入住客人</label><span>{{orderDetail.userName}}</span></div>
@@ -239,9 +243,10 @@
 		<div class="height count_down" v-if='orderDetail.status == 1'>
 			<label>订单关闭时间</label><span id="timer">{{min}}:{{s}}</span>
 		</div>
+		<pay-Detail :detail="OrderDetail" :show="payDetailShow" :total-price="totalPrice" ></pay-Detail>
 		<div id="foot">
 			<label v-if='orderDetail.status == 1'>总价：</label><span v-if='orderDetail.status == 1'>¥</span><span v-if='orderDetail.status == 1'>{{userSelection.orderData.actualPrice}}</span>
-			<div><p>&nbsp<i class="fa fa-angle-up" aria-hidden="true"></i></p><span>详情</span></div>
+			<div @click="showPayDatail"><p>&nbsp<i class="fa fa-angle-up" aria-hidden="true"></i></p><span>详情</span></div>
 			<span class="button" v-if='orderDetail.status == 1' @click='paySubmit'>支付</span>
 			<span class="button comment" v-if='orderDetail.status == 8' >去点评</span>
 		</div>
@@ -254,6 +259,7 @@
 import { Toast, Toptips } from 'vue-weui';
 import {getStates} from '../../vuex/getters.js';
 import { Common } from '../scripts/common.js';
+import PayDetail from './PayDetail.vue';
 
 const timer = (limitTime, callback) => {
     const formatNum = num => num < 9 ? `0${num}` : num;
@@ -277,6 +283,9 @@ const timer = (limitTime, callback) => {
 	export default {
 		data() {
 			return {
+				totalPrice:0,
+				payDetailShow:false,
+				OrderDetail: [],
 				showBox: false,
 				isRequest: false,
 				showTopTips: false,
@@ -318,12 +327,23 @@ const timer = (limitTime, callback) => {
 				dateFormat(date) {
 						return date.replace(/-/g, '.').substr(0,10);
 				},
+				showPayDatail() {
+		      this.payDetailShow = true;
+		      window.scrollTo(0, 0);
+	    	},
 		},
+		events: {
+	    hidePayDatail() {
+	      this.payDetailShow = false;
+	    },
+	  },
 		ready() {
 			//初始化数据，
 			const _this = this;
 			Common.resource("get",api+'/api/orderDetail',this.req,function(obj){
 				_this.orderDetail = obj;
+				_this.OrderDetail = obj.room;
+				_this.totalPrice = obj.actualPrice;
 			});
 
 			setTimeout(() => {
@@ -340,7 +360,7 @@ const timer = (limitTime, callback) => {
       }, 100);
 		},
 		components:{
-				Toast, Toptips
+				Toast, Toptips,PayDetail
 		},
 		vuex: {
 			getters :{
