@@ -146,6 +146,12 @@
                                 t.borderRadius = true;
                                 text = '请选择离店日期';
                             }
+                            else{
+                              // 选择出真确的时间
+                              // 10.19
+                              //  t.calculateResult('vue-calenvue-calendar-confirm');
+                              //  t.$dispatch('vue-calendar-confirm',t.calculateResult);
+                            }
                         } else { //如果没有中间状态，说明是重新选择入住时间
                             t.isStartDate = sec;
                             t.selectBefore = sec;
@@ -269,7 +275,6 @@
                 }
             }
             CAL.init();
-            // CAL.renderScrollWithIscroll();
         }
     }
 </script>
