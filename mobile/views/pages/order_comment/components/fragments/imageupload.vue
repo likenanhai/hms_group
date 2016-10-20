@@ -91,7 +91,7 @@
 </template>
 <script>
   import { Toast } from 'vue-weui';
-  import Upload from 'Upload';
+  import Upload from '../../../../../components/Upload.vue';
   import ToastError from './ToastError';
 
   let uploadTimeout;
@@ -102,7 +102,7 @@
     props: ['maxNum', 'images'],
     data(){
       return{
-        //url: `/hotel/${window.params.TID}/share_order_upload_pic`,//'http://localhost:3001',
+        url: '',//`/hotel/${window.params.TID}/share_order_upload_pic`,//'http://localhost:3001',
         ToastLoading: false,
         ToastFail: false,
         ErrorMsg: '上传失败',

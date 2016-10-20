@@ -778,7 +778,19 @@ data.orderPrice = {
     roomTypeName: '大床房', // 房型名称
     packageName: '套餐名称', // 套餐名称
     price: 9, // 房价
-}
+};
+data.commentOrder = {
+  id: '111',
+  hotelLogo: 'logo',
+  room: [{
+      roomTypeName: 'T788',},
 
+    ],
+  checkInDate: '2016-08-19 18:00',
+  checkOutDate: '2016-08-21 14:00',
+  paymentMethod: 1,
+  coupon: 'xxx优惠',
+  rules: '文明用语',
+}
 
 module.exports = data;

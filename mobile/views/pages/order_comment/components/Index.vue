@@ -76,11 +76,11 @@
 </style>
 
 <template>
-  <header-block class="block"></header-block>
+  <header-block class="block" :orderdata='orderData'></header-block>
   <radio-group class="block" :value.sync="UserType"></radio-group>
   <section class="padding-top-3 clearfix">
     <span class="award" v-if="HasAwards"><i class="fa fa-gift"></i>{{ActiveTitle}}</span>
-    <info-panel class="fr"> {{{ShareRuleText}}}</info-panel>
+    <info-panel class="fr"> {{{orderData.rules}}}</info-panel>
   </section>
   <rate-list :rate.sync="ScoreExtend"></rate-list>
   <Comment :value.sync="Content"
@@ -102,6 +102,8 @@
   import Checkbox from './fragments/checkbox';
   import { Button, Toast } from 'vue-weui';
   import ToastError from './fragments/ToastError';
+  import {getStates} from '../../../../vuex/getters.js';
+  import { Common } from '../../../scripts/common.js';
   //const ShareRuleText = document.querySelector('#ShareRuleText').textContent.trim().replace(/\n/g, '<br/>');
 
   export default {
@@ -121,6 +123,7 @@
         Content:'',
         Images:[],
         IsOpen: false,
+        orderData:{},
       }
     },
 
@@ -157,41 +160,55 @@
 
         // 组建提交数据
         const postData = {
-          UserType: this.$data.UserType,
-          ScoreExtend: this.$data.ScoreExtend,
-          Content: this.$data.Content,
-          Images: this.$data.Images,
-          IsOpen: window.parseInt(!this.$data.IsOpen * 1),
+          orderId:this.userSelection.orderData.message.orderId,
+          travelType: +this.$data.UserType+1,
+          //ScoreExtend: this.$data.ScoreExtend,
+          wholeScore:this.$data.ScoreExtend.TotalScore,
+          serviceAttitude:this.$data.ScoreExtend.AttitudeScore,
+          serviceEfficiency:this.$data.ScoreExtend.EfficiencyScore,
+          sleepQuality:this.$data.ScoreExtend.SleepScore,
+          comment: this.$data.Content,
+          images: this.$data.Images,
+          IsOpen: window.parseInt(this.$data.IsOpen * 1),
         };
+        console.log(postData);
         // 检验4项评分是否都选择
-        if (postData.ScoreExtend.TotalScore === 0 ||
-            postData.ScoreExtend.AttitudeScore === 0 ||
-            postData.ScoreExtend.EfficiencyScore === 0 ||
-            postData.ScoreExtend.SleepScore === 0 ) {
+        if (postData.wholeScore === 0 ||
+            postData.serviceAttitude === 0 ||
+            postData.serviceEfficiency === 0 ||
+            postData.sleepQuality === 0 ) {
           this.toastMsg('评分未完成!');
           return;
         }
         // 评论内容不能为空
-        if (postData.Content.trim() == '') {
+        if (postData.comment.trim() == '') {
           this.toastMsg('请填写评论!');
           return;
         }
-
-        this.$http
-          .post(`/hotel/${window.params.TID}/share_order_comment/${window.params.OrderID}`, postData, {
-          emulateJSON: true,
-        }).then(({ status, data }) => {
-          if (status === 200) {
-            if(data.error_code === 0) {
-              window.location.href = `/hotel/${window.params.TID}/share_order_award/${window.params.OrderID}`;
-            } else {
-              this.toastMsg(data.error_msg);
-            }
-          }
-        });
+        const _this = this;
+        Common.resource("post",api+'/api/comments',postData,function(obj){
+  				_this.toastMsg('评论提交');
+  			});
+        // this.$http
+        //   .post(`/hotel/${window.params.TID}/share_order_comment/${window.params.OrderID}`, postData, {
+        //   emulateJSON: true,
+        // }).then(({ status, data }) => {
+        //   if (status === 200) {
+        //     if(data.error_code === 0) {
+        //       window.location.href = `/hotel/${window.params.TID}/share_order_award/${window.params.OrderID}`;
+        //     } else {
+        //       this.toastMsg(data.error_msg);
+        //     }
+        //   }
+        // });
       },
     },
-
+    ready() {
+      const _this = this;
+      Common.resource("get",api+'/api/commentOrder',this.userSelection.message.orderId,function(obj){
+        _this.orderData = obj;
+      });
+    },
     components:{
       RateList,
       Comment,
@@ -201,7 +218,14 @@
       Checkbox,
       HeaderBlock,
       ToastError,
-    }
-
+    },
+    vuex: {
+			getters :{
+				userSelection: getStates.getUserSelection,
+			},
+			actions :{
+				//setMessages,
+			}
+		},
   }
 </script>
