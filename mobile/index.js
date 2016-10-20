@@ -26,7 +26,7 @@ import Register from './views/pages/member/Register.vue';
 import comment_list from './views/pages/comment_list.vue';
 import HotelIntroduce from './views/pages/HotelIntroduce.vue';
 import OrderComment from './views/pages/order_comment/components/App.vue';
-import calendarTest from './views/pages/calendar-test.vue';
+import calendarTest from './views/pages/calendarPage.vue';
 // new Vue(App).$mount().$appendTo('#app');
 Vue.config.silent = true;
 
@@ -103,7 +103,7 @@ var router = new Router();
     },
     //日历测试
     '/calendarTest': {
-      component: calendarTest,
+      component: calendarTest
     },
 
   });

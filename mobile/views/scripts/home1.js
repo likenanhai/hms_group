@@ -3,7 +3,8 @@
 // 引入组件
 
 import Swiper from '../../components/swiper.vue';
-import SelectDate from '../../components/Select-date.vue';
+import CalendarPage from '../pages/calendarPage.vue';
+
 import {
   Button,
   SearchBar,
@@ -40,10 +41,17 @@ export default {
         pagination : '.swiper-pagination',
       },
       searchbar_value:'',
-      today: new Date().getDate(),
-      stayDay: new Date().toISOString().substr(0,10),
-      leaveDay: new Date( new Date().setDate(new Date().getDate()+1)).toISOString().substr(0,10),
-      total_days:'',
+      startDate: moment().format('YYYY-MM-DD'),
+      endDate: moment().add('days',1).format('YYYY-MM-DD'),
+      daysNum: 1,
+      week: {
+        str:['日','一','二','三','四','五','六'],
+        start: moment().format('d'),
+        end: moment().add('days',1).format('d'),
+      },
+      calendar:{
+        show:false,
+      },
       url: api+'/api/home',
       home:{
         data:{
@@ -54,7 +62,7 @@ export default {
       dialogTitle: "请输入您要查询的地址",
       toast:{
         toastShow: false,
-        toastText:""
+        toastText: ""
       }
     };
   },
@@ -67,23 +75,26 @@ export default {
         _this.toast.toastShow = false;
       }, 2000);
     },
+    getPriceDates(date){
+      this.startDate = date.selectedInfo.daysInfo[date.startDate].date;
+      this.endDate = date.selectedInfo.daysInfo[date.endDate].date;
+      this.daysNum = date.selectedInfo.daysNum;
+      this.week.start = moment(this.startDate).format('d');
+      this.week.end = moment(this.endDate).format('d');
+      console.log(typeof(this.week.start));
+      console.log(date);
+
+    },
   },
   methods: {
-    getDays:function(startDay,endDay){
-      var startDay_date = new Date(startDay);
-      var endDay_date = new　Date(endDay);
-      var days_stamp = endDay_date.getTime() - startDay_date.getTime();
-      var days = (days_stamp/1000/60/60/24);
-      return days;
-    },
     // 选择品牌
     selectBrand:function(brands){
       this.ac_selectBrands(brands);
       this.$router.go('/hotel_list');
     },
     handerfindHotel(){
-      console.log(this.city);
-      console.log(this.homeStyle);
+      // console.log(this.city);
+      // console.log(this.homeStyle);
       if(this.homeStyle === "2"){
         if(this.city === ''){
           this.$dispatch('toastError',"请输入您要查找的城市");
@@ -98,17 +109,14 @@ export default {
           this.$router.go('/hotel_list');
         }
       }else{
-
         if(this.searchbar_value === '' ){
           this.$dispatch("toastError","请输入您要查询的地址");
         }else {
           const userSelection ={
             orderData:{
-              groupId:this.groupId,
-              userId:this.userId,
-              checkInDate : this.stayDay,
-              checkOutDate : this.leaveDay,
-              night : this.total_days
+              checkInDate : this.startDate,
+              checkOutDate : this.endDate,
+              night : this.daysNum
             },
             hotelMessages:{
               address:this.searchbar_value, //查询地址
@@ -127,43 +135,24 @@ export default {
 
   },
   watch: {
-    stayDay(newVal) {
-      if(new Date(newVal).getTime() < new Date().getTime()){
-        this.stayDay = moment(new Date().getTime() + 10000).format("YYYY-MM-DD");
-      }
-      if(new Date(this.stayDay).getTime() >= new Date(this.leaveDay).getTime()){
-        let _leaveDay = new Date(this.stayDay).getTime() + 86400 * 1000;
-        this.leaveDay = moment(_leaveDay).format('YYYY-MM-DD');
-      }
-      this.total_days = this.getDays(this.stayDay,this.leaveDay);
-    },
-    leaveDay(newVal){
-      if(new Date(this.stayDay).getTime() >= new Date(newVal).getTime()){
-        let _leaveDay = new Date(this.stayDay).getTime() + 86400 * 1000;
-        this.leaveDay = moment(_leaveDay).format('YYYY-MM-DD');
-      }
-      this.total_days = this.getDays(this.stayDay,this.leaveDay);
-    },
   },
   components: {
     Swiper,
     Button,
-    SelectDate,
     SearchBar,
     Dialog,
     Toast,
+    CalendarPage,
   },
   ready() {
     var _this = this;
     let req = {
-      groupId:this.groupId,
     };
     //初始化数据，
     Common.resource("get",this.url,req,function(obj){
       _this.home = obj;
       _this.images = obj.items.banners;
     });
-    this.total_days = this.getDays(this.stayDay,this.leaveDay);
   },
   vuex: {
     getters: {

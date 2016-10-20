@@ -1,0 +1,334 @@
+/*
+ * base css
+ */
+@myrem: 375/640rem;
+.vue-calendar-backdrop {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+}
+.one-px-line() {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid #d9d9d9;
+    -webkit-transform: scaleY(.5);
+    transform: scaleY(.5);
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+.one-px-line-top() {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid #d9d9d9;
+    -webkit-transform: scaleY(.5);
+    transform: scaleY(.5);
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+.vue-calendar-content {
+    background: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1000;
+    font-size: 0.3 * @myrem;
+    #scrollPanelWrapper{
+        position: relative;
+        top: 0;
+    }
+    .vue-calendar-content-title-wrapper {
+        background: #fff;
+        z-index: 1003;
+        height: 0.90 * @myrem;
+        line-height: 0.90 * @myrem;
+        position: relative;
+        .text {
+            float: left;
+            padding-left: 0.2 * @myrem;
+            color: #666666;
+            font-size: 0.32 * @myrem;
+        }
+        .vue-component-calendar-complete-button {
+            float: right;
+            height: 100%;
+            margin-right: 0.2 * @myrem;
+            a {
+                color: #2eb6a8;
+                font-size: 0.30 * @myrem;
+                text-decoration: none;
+                padding: 0 * @myrem 0.20 * @myrem;
+                border: 0.02 * @myrem solid #2eb6a8;
+                border-radius: 0.06 * @myrem;
+            }
+        }
+        &:after {
+            .one-px-line
+        }
+    }
+    .month-bar-fixed {
+        overflow: visible;
+        text-align: center;
+        height: 0.6 * @myrem;
+        line-height: 0.6 * @myrem;
+        width: 100%;
+        position: fixed;;
+        top: 1.5 * @myrem;
+        background: #fafafa;
+        z-index: 1000;
+
+        &:after{
+            .one-px-line;
+        }
+    }
+    .week-bar {
+        height: 0.6 * @myrem;
+        line-height: 0.6 * @myrem;
+        position: relative;
+        background: #fff;
+        z-index: 1001;
+        .weekend {
+            color: #fa967f;
+        }
+        &:after {
+            .one-px-line
+        }
+        ul {
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: -webkit-box;
+            display: flex;
+            li {
+                color: #666666;
+                -webkit-flex: auto;
+                -ms-flex: auto;
+                -webkit-box-flex: 1;
+                flex: auto;
+                list-style: none;
+                text-align: center;
+            }
+        }
+    }
+    .vue-calendar-date-wrapper {
+        -webkit-overflow-scrolling: touch;
+        overflow-scrolling: touch;
+        overflow: auto;
+        position: relative;
+        -webkit-transform:translate3d(0,0,0);
+        // margin-top: -0.6 * @myrem;
+        .month-bar {
+            text-align: center;
+            height: 0.6 * @myrem;
+            line-height: 0.6 * @myrem;
+            width: 100%;
+            position: relative;
+            background: #fafafa;
+            &:before {
+                // .one-px-line-top;
+            }
+            &:after {
+                .one-px-line;
+            }
+        }
+        // .first-month-bar{
+        //     visibility: hidden;
+        // }
+        // .first-month-bar {
+        //     position: fixed;
+        //     top: 1.5 * @myrem;
+        //     z-index: 100;
+        // }
+        .month-list {
+            ul li {
+                list-style: none;
+            }
+            ul {
+                overflow: hidden;
+            }
+            li {
+                display: inline-block;
+                // float: left;
+                width: 14.286%;
+                border-bottom: 1px solid #eee;
+                text-align: center;
+                position: relative;
+                height: 1 * @myrem;
+                line-height: 1 * @myrem;
+                color: #333333;
+                .dd {
+                    position: relative;
+                    display: inline-block;
+                    top: -0.15 * @myrem;
+                }
+                &.disabled {
+                    color: #a2a2a2;
+                }
+                &:after {
+                    // .one-px-line;
+                }
+                &.without-text {
+                    i {
+                        &:after {
+                            content: ''!important;
+                        }
+                    }
+                }
+                &.is-holiday {
+                    .holiday {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        left: 0;
+                        bottom: 0;
+                        &:before {
+                            width: 0;
+                            height: 0;
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                            border-bottom: 0.35 * @myrem solid #cccccc;
+                            border-left: 0.35 * @myrem solid transparent;
+                        }
+                        &:after {
+                            content: '假';
+                            position: absolute;
+                            bottom: 0.02 * @myrem;
+                            right: 0.02 * @myrem;
+                            font-size: 0.16 * @myrem;
+                            color: #fff;
+                            line-height: 0.2 * @myrem;
+                        }
+                    }
+                }
+                &.is-work {
+                    .holiday {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        left: 0;
+                        bottom: 0;
+                        &:before {
+                            width: 0;
+                            height: 0;
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                            border-bottom: 0.35 * @myrem solid #fa967f;
+                            border-left: 0.35 * @myrem solid transparent;
+                        }
+                        &:after {
+                            content: '班';
+                            position: absolute;
+                            bottom: 0.02 * @myrem;
+                            right: 0.02 * @myrem;
+                            font-size: 0.16 * @myrem;
+                            color: #fff;
+                            line-height: 0.2 * @myrem;
+                        }
+                    }
+                }
+                &.border-radius {
+                    border-radius: 0.06 * @myrem!important;
+                }
+                &.selected {
+                    &-start {
+                        border-bottom: none;
+                        border-radius: 0.06 * @myrem 0 0 0.06 * @myrem;
+                        i:after {
+                            content: '入住';
+                        }
+                    }
+                    &-end {
+                        border-bottom: none;
+                        border-radius: 0 0.06 * @myrem 0.06 * @myrem 0;
+                        i:after {
+                            content: '离店';
+                        }
+                    }
+                    &-start,
+                    &-end {
+                        border-top: 0.01 * @myrem solid #2eb6a8;
+                        border-bottom: 0.01 * @myrem solid #2eb6a8;
+                        height: 1 * @myrem!important;
+                        line-height: 1 * @myrem!important;
+                        color: #fff;
+                        background: #2eb6a8;
+                        i:after {
+                            position: absolute;
+                            top: 0.2 * @myrem;
+                            left: 0;
+                            font-size: 0.24 * @myrem;
+                            font-style: normal;
+                            text-align: center;
+                            width: 100%;
+                        }
+
+                    }
+                    &-start.is-holiday ,&-end.is-holiday{
+                        .holiday{
+                            &:before{
+                                 width: 0;
+                            height: 0;
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                            border-bottom: 0.35 * @myrem solid #fff;
+                            border-left: 0.35 * @myrem solid transparent;
+                            }
+                            &:after{
+                                color: #fa967f;
+                            }
+                        }
+                    }
+
+                    &-line {
+                        background: #e0f4f2;
+                        color: #333;
+                        // border-top: 0.01 * @myrem solid #2eb6a8;
+                        height: 1 * @myrem!important;
+                        line-height: 1 * @myrem!important;
+                        // border-bottom: 0.01 * @myrem solid #2eb6a8;
+                        &:after {
+                            .one-px-line;
+                        }
+                        &:before {
+                            .one-px-line-top;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.vue-component-calendar-content-transition {
+    -webkit-transition: all ease-in-out 0.3s;
+    transition: all ease-in-out 0.3s;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+.vue-component-calendar-content-enter,
+.vue-component-calendar-content-leave {
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+}
+.expand-enter,
+.expand-leave {
+    opacity: 0;
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}

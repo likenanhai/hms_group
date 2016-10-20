@@ -1,12 +1,10 @@
 <template lang="html">
-  <div class="calendar-test">
-    calendar-test
+  <div class="">
+
   </div>
 </template>
 
 <script>
-
-
 export default {
   data() {
     return {
