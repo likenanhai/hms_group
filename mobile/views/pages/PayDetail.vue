@@ -1,49 +1,87 @@
 <style lang='less' scoped>
 
-	.cover {
-	    position: fixed;
-	    z-index: 1;
-	    left: 0;
-	    top: 0;
-	    width: 100vw;
-	    height: 100vh;
-	    background-color: rgba(0, 0, 0, .92);
-	    padding: 0 .12rem;
-			opacity: 0;
-			transition: all .3s ease-in;
-  		transform: translate3d(0,100%,0);
-			&.slideUp {
-			transform: none;
-			opacity: 1;
-			}
-		.cell {
-			width:93.6%;
-			color: white;
-			font-size: .14rem;
-			font-family: '微软雅黑';
-			line-height: .48rem;
-			border-bottom: 1px solid #757778;
-			span {
-				float: right;
-				color: #EC5800
-			}
-		}
-		.last {
-			border-bottom: none;
-		}
-		.cell:nth-child(1) span{
-				color: white;
-		}
-		p {
-			width:93.6%;
-			margin: .1rem 0 .1rem 0;
-			color: white;
-			font-size: .17rem;
-			font-family: '微软雅黑';
-			text-align: center;
-			letter-spacing: 2px;
-		}
-		.foot {
+* {
+box-sizing: border-box;
+}
+.dash-line{
+border-top: 1px dashed rgba(255,255,255,.25);
+}
+.book-detail {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+background-color: rgba(0, 0, 0, .92);
+z-index: 100;
+color: #fff;
+padding: 0 .12rem;
+opacity: 0;
+transform: translate3d(0,100%,0);
+}
+
+h2 {
+	color: #bfbfbf;
+font-size: 14px;
+line-height: 8vh;
+}
+
+h3 {
+	color: #bfbfbf;
+text-align: center;
+font-size: 16px;
+line-height: 14vw;
+font-family: '微软雅黑'
+}
+
+.body {
+font-size: 3.8vw;
+border-top: 1px solid #757778;
+border-bottom: 1px solid #757778;
+color: #bfbfbf;
+font-weight: normal;
+height: 66vh;
+overflow: auto;
+padding: 0;
+}
+
+.detail-item {
+	height: 8.2vh;
+}
+
+
+.txt-left {
+	display: inline-block;
+	font-size: 14px;
+	font-family: '微软雅黑';
+	font-weight: bold;
+}
+
+.txt-right {
+text-align: right;
+float: right;
+display: inline-block;
+	p:nth-child(2) {
+		color: #EC5800;
+	}
+}
+
+footer {
+font-size: 4.2vw;
+height: 34vh;
+p {
+	font-size: 14px;
+	font-family: '微软雅黑';
+	font-weight: bold;
+	padding: 2vw 0;
+	color: #bfbfbf;
+	span {
+		color: #EC5800;
+		float: right;
+		font-weight: normal;
+	}
+}
+.foot {
 			position: absolute;
 			bottom: 8px;
 			text-align: center;
@@ -66,51 +104,116 @@
 				}
 			}
 		}
-	}
+}
+.slideUp {
+transform: none;
+opacity: 1;
+}
+
 </style>
+
 <template>
-	<div class="cover" :class="{'slideUp':show}">
-		<div class="cell">
-			<label>费用明细</label><span v-if="detail[0].date">{{dateFormat(detail[0].date)}}</span>
-		</div>
-		<p>房费</p>
-		<div class="cell">
-			<label>{{detail[0].roomTypeName}}</label><span>¥&nbsp{{detail[0].price.toFixed(2)}}X1&nbsp间</span>
-		</div>
-		<p>优惠</p>
-		<div class="cell">
-			<label>优惠券</label><span>-&nbsp¥&nbsp10.00</span>
-		</div>
-		<div class="cell last" >
-			<label>实付金额</label><span>¥&nbsp190.00</span>
-		</div>
+<div class="book-detail" :class="{'slideUp':show}">
+
+  <h2>
+    费用明细
+  </h2>
+  <div class="body">
+  <section>
+    <h3>
+      房费
+    </h3>
+    <div class="detail-item flex-block" v-for="room in detail">
+      <div class="txt-left flex-item">
+        {{room.roomTypeName}}
+      </div>
+      <div class="txt-right flex-item">
+        <p>
+          {{room.date}}
+        </p>
+        <p>
+          ¥ {{room.price.toFixed(2)}} x {{room.count}} 间
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="dash-line" v-if="detail.TotalGiftPrice>0||showPaymentDiscount">
+    <h3>
+      优惠
+    </h3>
+    <div class="detail-block">
+      <div class="detail-item flex-block" v-if="detail.TotalGiftPrice>0">
+        <div class="txt-left flex-item">
+          {{detail.GiftExtend.Name}}
+        </div>
+        <div class="txt-right flex-item">
+          -¥{{detail.TotalGiftPrice.toFixed(2)}} x 1张
+        </div>
+      </div>
+      <div class="detail-item flex-block" v-if="showPaymentDiscount">
+        <div class="txt-left flex-item">
+          支付减免
+        </div>
+        <div class="txt-right flex-item">
+          -¥{{detail.PaymentDiscount.toFixed(2)}}
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+  <footer>
+    <p >实付金额
+      <span class="ThemeAuxColor">
+        ¥ {{totalPrice.toFixed(2)}}
+      </span>
+    </p>
 		<div class="foot">
-			<div class="button" @click="closeWrap">
-				<i class="fa fa-angle-down arrow"></i>
-				<div>收回</div>
-			</div>
+				<div class="button" @click="closeWrap">
+					<i class="fa fa-angle-down arrow"></i>
+					<div>收回</div>
+				</div>
 		</div>
-	</div>
+  </footer>
+</div>
 </template>
 <script>
-	export default {
-		props: ['show', 'detail'],
-		data() {
-			return {
-				isShow: true,
-				title: '123',
-			};
-		},
-		ready(){
-			console.log(this.detail[0].date);
-		},
-		methods: {
-			dateFormat(date) {
-					return date.replace(/-/g, '.');
+  export default {
+    //props: ['detail', 'show','totalPrice'],
+		props:{
+			detail:{
+				type: Array,
+				default: [],
 			},
-		 closeWrap() {
-			 this.$dispatch('hidePayDatail');
-		 },
-	 },
-	}
+			show:{
+				type: Boolean,
+				default: false,
+			},
+			totalPrice:{
+				type: Number,
+				default: 0,
+			},
+		},
+    data() {
+      return {};
+    },
+
+    computed: {
+      showPaymentDiscount() {
+        // console.log(this.detail.PaymentDiscount,this.detail.PaymentPrice,(this.detail.PaymentDiscount<this.detail.PaymentPrice));
+        return (this.detail.PaymentDiscount < this.detail.PaymentPrice);
+      },
+    },
+    methods: {
+      closeWrap() {
+        this.$dispatch('hidePayDatail');
+      },
+    },
+		ready() {
+			console.log(this.totalPrice);
+		},
+    created() {
+      // console.log(this.detail);
+    },
+  };
 </script>

@@ -524,6 +524,7 @@ data.orders = {
             checkOutDate: ''
         },
         actualPrice: 88.8,
+        bComment:0
     }, {
         id: '57d1331ab2b760120419',
         name: 'xx酒店',
@@ -540,6 +541,7 @@ data.orders = {
             checkOutDate: ''
         },
         actualPrice: 88.8,
+        bComment:1
     }, {
         id: '57d1331ab2b760120419',
         name: 'xx酒店',
@@ -556,6 +558,7 @@ data.orders = {
             checkOutDate: ''
         },
         actualPrice: 88.8,
+        bComment:0
     }, {
         id: '57d1331ab2b760120419',
         name: 'xx酒店',
@@ -572,6 +575,7 @@ data.orders = {
             checkOutDate: ''
         },
         actualPrice: 88.8,
+        bComment:1
     }, {
         id: '57d1331ab2b760120419',
         name: 'xx酒店',
@@ -588,6 +592,7 @@ data.orders = {
             checkOutDate: ''
         },
         actualPrice: 88.8,
+        bComment:0
     }, {
         id: '57d1331ab2b760120419',
         name: 'xx酒店',
@@ -604,6 +609,7 @@ data.orders = {
             checkOutDate: ''
         },
         actualPrice: 88.8,
+        bComment:0
     }, {
         id: '57d1331ab2b760120419',
         name: 'xx酒店',
@@ -620,6 +626,7 @@ data.orders = {
             checkOutDate: ''
         },
         actualPrice: 88.8,
+        bComment:0
     }, {
         id: '57d1331ab2b760120419',
         name: 'xx酒店',
@@ -636,6 +643,7 @@ data.orders = {
             checkOutDate: ''
         },
         actualPrice: 88.8,
+        bComment:0
     }, {
         id: '57d1331ab2b760120419',
         name: 'xx酒店',
@@ -652,6 +660,7 @@ data.orders = {
             checkOutDate: ''
         },
         actualPrice: 88.8,
+        bComment:0
     }, {
         id: '57d1331ab2b760120419',
         name: 'xx酒店',
@@ -668,6 +677,7 @@ data.orders = {
             checkOutDate: ''
         },
         actualPrice: 88.8,
+        bComment:0
     }, {
         id: '57d1331ab2b760120419',
         name: 'xx酒店',
@@ -684,6 +694,7 @@ data.orders = {
             checkOutDate: ''
         },
         actualPrice: 88.8,
+        bComment:0
     }, {
         id: '57d1331ab2b760120419',
         name: 'xx酒店',
@@ -700,6 +711,7 @@ data.orders = {
             checkOutDate: ''
         },
         actualPrice: 88.8,
+        bComment:0//是否点评0: 末点评 1: 已点评
     }, ],
 };
 
@@ -708,13 +720,20 @@ data.order_details = {
     status:1,
     name: 'lsy的酒店', //酒店名称
     hotelPhone: '15013410124', //酒店联系电话
-    room: { //房型
-        type: 'T788', //房型
-        rice: 200, //房型价格
-        orderNum: 2, //订房数
-        checkInData: '2016-09-20', //入住日期
-        checkOutDate: '2016-09-22' // 离开日期
-    },
+    room: [{
+              date: '2016-11-01',
+              count: 2,
+              roomTypeName: "大床房",
+              packageName: "a",
+              price: 100
+          },
+          {
+              date: '2016-11-01',
+              count: 2,
+              roomTypeName: "大床房",
+              packageName: "a",
+              price: 100
+          }, ],
     checkInDate: '2016-08-19 18:00', //离店时间
     checkOutDate: '2016-08-21 14:00', //住店时间
     arriveTime: '2016-08-19 14:00', //到店时间
@@ -734,6 +753,20 @@ data.orderPrice = {
     totalPrice: 198, //订单总价
     paymentDiscount: 10, //减免金额
     dailyPriceList: [{
+        date: '2016-11-01',
+        count: 2,
+        roomTypeName: "大床房",
+        packageName: "a",
+        price: 100
+    },
+    {
+        date: '2016-11-01',
+        count: 2,
+        roomTypeName: "大床房",
+        packageName: "a",
+        price: 100
+    },
+    {
         date: '2016-11-01',
         count: 2,
         roomTypeName: "大床房",
