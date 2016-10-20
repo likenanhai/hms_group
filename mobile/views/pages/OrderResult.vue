@@ -226,14 +226,14 @@
 			<div><label>订单总价</label><span>¥</span><span>{{userSelection.orderData.totalPrice}}</span></div>
 			<div><label>实付总价</label><span>¥</span><span>{{userSelection.orderData.actualPrice}}</span></div>
 		</div>
-		<div class="height count_down" v-if='Status == 3'>
+		<!-- <div class="height count_down" v-if='Status == 3'>
 			<label>订单关闭时间</label><span>45:00</span>
 		</div>
 		<div id="foot" v-if='Status != 1'>
 			<label v-if='Status == 3'>总价：</label><span v-if='Status == 3'>¥</span><span v-if='Status == 3'>{{userSelection.orderData.actualPrice}}</span>
 			<div><p>&nbsp<i class="fa fa-angle-up" aria-hidden="true"></i></p><span>详情</span></div>
 			<span class="button" v-if='Status == 2 || Status ==3':class='{comment: Status === 2}'>{{BtnMsg}}</span>
-		</div>
+		</div> -->
 	</div>
 </template>
 <script>

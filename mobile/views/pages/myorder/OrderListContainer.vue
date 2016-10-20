@@ -224,7 +224,7 @@
                       <label>订单总额：</label><span>¥</span><span>{{item.actualPrice}}</span>
                     </div>
                     <span class="button check_btn" @click='detailRouter(item.id)' v-if='item.status != 1'>查看订单</span>
-                    <span class="button comment_btn" v-if='item.status == 8'>{{item.bComment == 0 ? '评价晒单' : '已点评'}}</span>
+                    <span class="button comment_btn" v-if='item.status == 8' @click='comentRouter(item.bComment, item.id)'>{{item.bComment == 0 ? '评价晒单' : '已点评'}}</span>
                     <span class="button pay_btn" v-if='item.status == 1'>支付订单</span>
                     <!-- <div class="clearfloat"></div> -->
                 </div>
@@ -261,6 +261,14 @@ export default {
         orderTime() {},
     },
     methods: {
+        comentRouter(bComment, _orderId) {
+          this.setMessages({orderId:_orderId});
+          if (bComment == 0) {
+            this.$router.go('order_comment');
+          }else {
+            this.$router.go('comment_list');
+          }
+        },
         detailRouter(_orderId) {
           this.setMessages({orderId:_orderId});
           console.log(this.userSelection.message);

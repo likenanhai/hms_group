@@ -34,24 +34,24 @@
 
 <template>
   <section>
-    <img :src="image" alt="">
+    <img :src="orderdata.hotelLogo" alt="">
     <div>
       <hgroup>
         <p>入住房型：
           <i class="fa fa-wechat"
-            v-if="payType == 2 || payType == 99">
+            v-if="orderdata.paymentMethod == 1">
             <span>线上支付</span>
           </i>
           <i class="fa fa-paypal"
-            v-if="payType == 4">
+            v-if="orderdata.paymentMethod == 2">
             <span>到店支付</span>
           </i>
         </p>
-        <p>{{room_type}}</p>
+        <p>{{orderdata.room[0].roomTypeName}}</p>
       </hgroup>
       <hgroup>
         <p><label>住离时间：</label></p>
-        <p>{{checkInDate}} 至 {{checkOutDate}}</p>
+        <p>{{orderdata.checkInDate.substring(0,10)}} 至 {{orderdata.checkOutDate.substring(0,10)}}</p>
       </hgroup>
       </p>
     </div>
@@ -61,6 +61,7 @@
 <script>
   import moment from 'moment';
   export default{
+    props: ['orderdata'],
     data() {
       return {
         // image: `/tools/api/thumb?w=220&h=176&q=100&src=${encodeURIComponent(window.params.RoomTypeImage)}`,

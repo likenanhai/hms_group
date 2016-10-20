@@ -248,7 +248,7 @@
 			<label v-if='orderDetail.status == 1'>总价：</label><span v-if='orderDetail.status == 1'>¥</span><span v-if='orderDetail.status == 1'>{{userSelection.orderData.actualPrice}}</span>
 			<div @click="showPayDatail"><p>&nbsp<i class="fa fa-angle-up" aria-hidden="true"></i></p><span>详情</span></div>
 			<span class="button" v-if='orderDetail.status == 1' @click='paySubmit'>支付</span>
-			<span class="button comment" v-if='orderDetail.status == 8' >去点评</span>
+			<span class="button comment" v-if='orderDetail.status == 8' @click='comentRouter(orderDetail.id)'>去点评</span>
 		</div>
 		<toptips v-if='showTopTips'>支付超时，订单已取消</toptips>
     <toast type='loading' v-if='isRequest'>正在提交</toast>
@@ -260,6 +260,7 @@ import { Toast, Toptips } from 'vue-weui';
 import {getStates} from '../../vuex/getters.js';
 import { Common } from '../scripts/common.js';
 import PayDetail from './PayDetail.vue';
+import {setMessages} from '../../vuex/actions.js';
 
 const timer = (limitTime, callback) => {
     const formatNum = num => num < 9 ? `0${num}` : num;
@@ -300,6 +301,10 @@ const timer = (limitTime, callback) => {
 			};
 		},
 		methods: {
+			comentRouter(_orderId) {
+				this.setMessages({orderId:_orderId});
+				this.$router.go('order_comment')
+			},
 			paySubmit() {
         if (this.canPay) {
           if (this.isRequest) {
@@ -367,7 +372,7 @@ const timer = (limitTime, callback) => {
 				userSelection: getStates.getUserSelection,
 			},
 			actions :{
-				//setMessages,
+				setMessages,
 			}
 		},
 	}

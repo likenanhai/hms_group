@@ -67,6 +67,12 @@ router.get('/api/orderDetail',(req,res) => {
   res.json(Data.order_details);
 });
 
+// 获取评论订单详情
+router.get('/api/commentOrder',(req,res) => {
+  console.log("获取评论订单详情");
+  console.log(req.query);
+  res.json(Data.commentOrder);
+});
 //提交点评
 router.post('/api/comments',(req,res) =>{
   console.log("提交点评");
