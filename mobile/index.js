@@ -26,16 +26,9 @@ import Register from './views/pages/member/Register.vue';
 import comment_list from './views/pages/comment_list.vue';
 import HotelIntroduce from './views/pages/HotelIntroduce.vue';
 import OrderComment from './views/pages/order_comment/components/App.vue';
-import calendarTest from './views/pages/calendar-test.vue';
+import calendarTest from './views/pages/calendarPage.vue';
 // new Vue(App).$mount().$appendTo('#app');
 Vue.config.silent = true;
-
-window.Vue = Vue;
-
-import utils from './components/calendar/lib/utils.js';
-window.Vue.filter('convertDateFormatDisplay', utils.filters().convertDateFormatDisplay);
-window.Vue.filter('convertDateFormatValue', utils.filters().convertDateFormatValue);
-
 
 Vue.use(Router);
 Vue.use(Resource);
@@ -110,7 +103,7 @@ var router = new Router();
     },
     //日历测试
     '/calendarTest': {
-      component: calendarTest,
+      component: calendarTest
     },
 
   });

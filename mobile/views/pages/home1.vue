@@ -20,8 +20,9 @@
           <div class="title">
             入住
           </div>
-          <div class="date">
-            <select-date format="MM月dd日" :week="true" w="周" :d.sync="stayDay"></select-date>
+          <div class="date"  @click.prevent='calendar.show=true'>
+            {{startDate.substr(5,10).replace(/-/,'月')}}
+            <span>周{{ week.str[ parseInt(week.start) ] }}</span>
           </div>
         </div>
         <div class="days">
@@ -29,7 +30,7 @@
             <div class="shu"></div>
           </div>
           <div class="center">
-            共{{total_days}}晚
+            共{{daysNum}}晚
           </div>
           <div class="vertical">
             <div class="shu"></div>
@@ -40,9 +41,9 @@
           <div class="title">
             离店
           </div>
-          <div class="date">
-            <select-date format="MM月dd日" :week="true" w="周" :d.sync="leaveDay" ></select-date >
-
+          <div class="date" @click.prevent='calendar.show=true'>
+            {{endDate.substr(5,10).replace(/-/,'月')}}
+            <span>周{{ week.str[ parseInt(week.end) ] }}</span>
           </div>
         </div>
       </div>
@@ -100,6 +101,10 @@
         <div class="weui_toast_content">{{toast.toastText}}</div>
       </div>
     </div>
+    <div class="calendar">
+      <calendar-page :show-calendar.sync='calendar.show'></calendar-page>
+    </div>
+
   </div>
 
 </template>

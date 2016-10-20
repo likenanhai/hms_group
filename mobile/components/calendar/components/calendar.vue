@@ -10,7 +10,7 @@
             <div class="vue-calendar-content-title-wrapper" id="topHeight1">
                 <div class="text">{{titleText}}</div>
                 <div class="vue-component-calendar-complete-button">
-                    <a href="javascript:;" @click.prevent="calculateResult('vue-calendar-confirm')">完成</a>
+                    <!-- <a href="javascript:;" @click.prevent="calculateResult('vue-calendar-confirm')">完成</a> -->
                 </div>
             </div>
             <div class="week-bar" id="topHeight2">
@@ -149,8 +149,7 @@
                             else{
                               // 选择出真确的时间
                               // 10.19
-                              //  t.calculateResult('vue-calenvue-calendar-confirm');
-                              //  t.$dispatch('vue-calendar-confirm',t.calculateResult);
+                               t.calculateResult('vueCalendarConfirm');
                             }
                         } else { //如果没有中间状态，说明是重新选择入住时间
                             t.isStartDate = sec;
