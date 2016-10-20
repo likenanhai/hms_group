@@ -4,6 +4,7 @@
 // 引入组件
 import Swiper from "../../components/Swiper.vue";
 import { Button, } from 'vue-weui';
+import CalendarPage from '../pages/calendarPage.vue';
 
 import Circles from '../../assets/libs/circles.js';
 
@@ -21,6 +22,8 @@ export default {
       images: [
         '../../assets/images/banner1.jpg','../../assets/images/banner2.jpg','../../assets/images/banner3.jpg',
       ],
+      showCalendar:false,
+
       cover:{
         status:'',
         roomBanners:[],
@@ -44,14 +47,21 @@ export default {
       },
       // 入住时间
       days: {
-        stayDay:Common.timeFormat(this.userSelection.orderData.checkInDate,'MM月dd日'),
-        leaveDay:Common.timeFormat(this.userSelection.orderData.checkOutDate,'MM月dd日'),
-        total_days: this.userSelection.orderData.night
+        startDate:this.userSelection.orderData.checkInDate,
+        endDate:this.userSelection.orderData.checkOutDate,
+        neigthNum: this.userSelection.orderData.night
       },
 
     };
   },
   computed: {
+  },
+  events:{
+    getPriceDates(date){
+      this.days.startDate = date.selectedInfo.daysInfo[date.startDate].date;
+      this.days.endDate = date.selectedInfo.daysInfo[date.endDate].date;
+      this.days.neigthNum = date.selectedInfo.daysNum - 1;
+    },
   },
   ready() {
     console.log(this.userSelection);
@@ -152,6 +162,7 @@ export default {
   },
   components: {
     Swiper,
-    Button
+    Button,
+    CalendarPage,
   }
 };

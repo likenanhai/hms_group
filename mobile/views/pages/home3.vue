@@ -12,16 +12,17 @@
             <div class="title">
               入住
             </div>
-              <div class="date">
-              <select-date format="MM月dd日" :week="true" w="周" :d.sync="stayDay"></select-date>
-            </div>
+              <div class="date" @click.prevent="showCalendar=true">
+                {{startDate.substr(5,10).replace(/-/,'月')}}
+                <span>周{{ week.str[ parseInt(week.end) ] }}</span>
+              </div>
           </div>
           <div class="days">
             <div class="vertical">
               <div class="shu"></div>
             </div>
             <div class="center">
-              共{{total_days}}晚
+              共{{neightNum}}晚
             </div>
             <div class="vertical">
               <div class="shu"></div>
@@ -33,7 +34,10 @@
               离店
             </div>
             <div class="date">
-              <select-date format="MM月dd日" :week="true" w="周" :d.sync="leaveDay" ></select-date >
+              <div class="date" @click.prevent="showCalendar=true">
+                {{endDate.substr(5,10).replace(/-/,'月')}}
+                <span>周{{ week.str[ parseInt(week.end) ] }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -78,6 +82,10 @@
           </li>
         </ul>
         <!-- </iscroll> -->
+      </div>
+      <!-- calendar -->
+      <div class="calendar">
+        <calendar-page :show-calendar.sync="showCalendar"></calendar-page>
       </div>
     </div>
 

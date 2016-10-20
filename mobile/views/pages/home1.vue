@@ -30,7 +30,7 @@
             <div class="shu"></div>
           </div>
           <div class="center">
-            共{{daysNum}}晚
+            共{{neightNum}}晚
           </div>
           <div class="vertical">
             <div class="shu"></div>

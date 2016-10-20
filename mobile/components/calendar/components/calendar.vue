@@ -51,14 +51,15 @@
                 </div>
             </div>
         </div>
+        <vue-component-tips></vue-component-tips>
     </div>
-    <!-- <vue-component-tips></vue-component-tips> -->
+
 </template>
 
 <script>
     var utils = require('../lib/utils');
     var iScroll = require('../lib/iscroll').iScroll;
-    // var vueComTips = require('@hfe/vue-component-tips');
+    import VueComponentTips from './tips.vue';
 
     var myScroll;
     export default {
@@ -200,13 +201,14 @@
                 }
             },
             createTips: function (instance, text) {
+                console.log(instance);
                 // above/below 气泡的位置 可不传，默认为above
-                instance.$broadcast('vue-tips-create', text, 'above');
+                instance.$broadcast('vueTipsCreate', text, 'above');
             },
 
         },
         components:{
-            // 'vue-component-tips':vueComTips
+            VueComponentTips,
         },
         ready() {
             var self = this;

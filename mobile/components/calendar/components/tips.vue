@@ -1,6 +1,6 @@
 <template lang="html">
-  <div class="">
-
+  <div class="tips">
+    {{title}}
   </div>
 </template>
 
@@ -8,7 +8,13 @@
 export default {
   data() {
     return {
+      title:'',
     };
+  },
+  events:{
+    vueTipsCreate(title){
+      this.title = title;
+    },
   },
   computed: {},
   ready() {},

@@ -41,9 +41,9 @@
       </div>
     </div>
     <div class="footer">
-      <div class="title">
+      <div class="title" @click.prevent="showCalendar=true" >
         <i class="fa fa-calendar-minus-o" aria-hidden="true"></i>
-        <span>{{days.stayDay}} ~ {{days.leaveDay}}（{{days.total_days}} 日）</span>
+        <span>{{ days.startDate.substr(5,10).replace(/-/,'月') }}日 ~ {{ days.endDate.substr(5,10).replace(/-/,'月') }}日（{{days.neigthNum }} 晚）</span>
         <span class="right">修改&nbsp;
           <i class="fa fa-angle-right" aria-hidden="true"></i>
         </span>
@@ -89,6 +89,11 @@
         </ul>
       </div>
     </div>
+    <!-- calendar -->
+    <div class="calendar">
+      <calendar-page :show-calendar.sync="showCalendar"></calendar-page>
+    </div>
+    <!-- cover -->
     <div class="cover" :class="cover.status">
       <div class="content" >
         <i class="yo-ico close" @click='closeCover'>&#xe600</i>
