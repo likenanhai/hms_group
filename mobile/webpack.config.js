@@ -42,7 +42,7 @@ module.exports = {
       test:/\.css$/,
       loader:'vue-style!style!css!sass',
     }, {
-      test:/\.(scss|sass)$/,
+      test:/\.(scss|sass|less)$/,
       loader:'vue-style!style!css!sass',
     },{
       test:/\.(?:jpg|png|gif|woff|ttf|svg)$/,

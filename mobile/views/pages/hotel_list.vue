@@ -8,12 +8,12 @@
           <div class="content">
             <div class="days">
               <img src="/assets/images/ICON-08.png" alt="">
-              <div>3晚</div>
+              <div>{{req.night}}晚</div>
             </div>
             <div class="date">
-              <div>09-09</div>
+              <div>{{req.checkInDate.substr(5,10)}}</div>
               <div><i class="fa fa-angle-down" aria-hidden="true"></i></div>
-              <div>09-09</div>
+              <div>{{req.checkOutDate.substring(5,10)}}</div>
             </div>
           </div>
 

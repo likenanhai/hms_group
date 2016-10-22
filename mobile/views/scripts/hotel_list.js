@@ -56,6 +56,7 @@ export default {
         pageSize:20,
         brands: this.userSelection.hotelMessages.selected_brand,
         city:this.userSelection.hotelMessages.city,
+        night:this.userSelection.orderData.night,
       },
       hotel_list:{
         data:{
