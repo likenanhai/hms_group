@@ -7,6 +7,8 @@ import Swiper from "../../components/Swiper.vue";
 import SelectDate from "../../components/Select-date.vue";
 import CityList from "../../components/city-list.vue";
 import CalendarPage from "../pages/calendarPage.vue";
+import BtnLoadMore from '../pages/myorder/BtnLoadMore.vue';
+import { Toast } from 'vue-weui';
 
 // 引入公共方法
 import moment from "moment";
@@ -19,8 +21,7 @@ import {
 export default {
     data() {
             return {
-                groupId: "groupId",
-                userId: 'userId',
+                loading: true,
                 images: [],
                 options: {
                   pagination: '.swiper-pagination',
@@ -40,6 +41,10 @@ export default {
                   hotels: api+'/api/hotels'
                 },
                 // res
+                req:{
+                  pages:1,
+                  pageSize:20,
+                },
                 cities: {
                     "选择酒店": [{
                         "id": 2305,
@@ -82,11 +87,13 @@ export default {
             });
             Common.resource("get",this.url.hotels,reqHotels,(data) =>{
               vm.hotel_list = data;
+              this.loading = false;
             });
         },
         attached() {},
         watch: {
         },
+
         methods: {
             getBanner: function(url) {
                 var vm = this;
@@ -125,7 +132,26 @@ export default {
                 };
                 this.setOrderData(userSelection.orderData);
                 this.$router.go('./room_list');
-            }
+            },
+            // 滚动事件
+            scrollEvent(){
+              let btn = document.querySelectorAll('#btn-load-more')[0];
+              let footer = document.querySelectorAll('.footer')[0];
+              console.log(footer.scrollTop+','+footer.clientHeight+'-'+btn.offsetTop);
+              if(footer.scrollTop + footer.clientHeight >= btn.offsetTop - 231  && btn.clientHeight !== 0){
+                this.loadMore();
+              }
+            },
+            loadMore(){
+                const vm = this;
+                vm.loading = true;
+                this.req.page += 1;
+                Common.resource('get',this.url.hotels,this.getRequest(),(data) => {
+                vm.hotel_list.items = vm.hotel_list.items.concat(data.items);
+                vm.loading = false;
+              });
+            },
+
         },
         vuex: {
             actions: {
@@ -138,5 +164,7 @@ export default {
             SelectDate,
             CityList,
             CalendarPage,
+            Toast,
+            BtnLoadMore,
         }
 };

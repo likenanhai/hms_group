@@ -73,6 +73,7 @@ export default {
   },
   events: {
     bindScrollEvent(){
+      console.log('bindScrollEvent');
       let footer = document.querySelectorAll(".footer")[0];
       footer.removeEventListener('scroll',this.scrollEvent);
       footer.addEventListener('scroll',this.scrollEvent);
@@ -216,7 +217,6 @@ export default {
     scrollEvent(){
       let btn = document.querySelectorAll('#btn-load-more')[0];
       let footer = document.querySelectorAll('.footer')[0];
-
       if(footer.scrollTop + footer.clientHeight >= btn.offsetTop - 4  && btn.clientHeight !== 0){
         this.loadMore();
       }
@@ -229,7 +229,7 @@ export default {
         vm.hotel_list.items = vm.hotel_list.items.concat(data.items);
         vm.loading = false;
       });
-    }
+    },
 
   },
   components: {

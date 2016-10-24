@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="footer">
-      <ul>
+      <ul class="hotel-list">
         <li v-for="(index,item) in hotel_list.items">
           <div class="membrane" :hotelId="item.id" :hotelName="item.name" @click="selectHotel($event)">
 

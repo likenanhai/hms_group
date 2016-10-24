@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      groupId:'groupId',
+      groupId,
       userId:'userId',
       images: [],
       options: {
@@ -52,7 +52,7 @@ export default {
       calendar:{
         show:false,
       },
-      url: api+'/api/home',
+      url: api+ mockApi +'/home',
       home:{
         data:{
           items:[],
@@ -150,6 +150,8 @@ export default {
       _this.home = obj;
       _this.images = obj.items.banners;
     });
+    // 获取当前url
+    console.log(this.groupId);
   },
   vuex: {
     getters: {

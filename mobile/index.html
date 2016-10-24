@@ -16,7 +16,11 @@
   <!-- <script type="text/javascript" src='http://hedgehog.ngrok.cc/mobile/mobile_action.js'></script> -->
   <script type="text/javascript" src='./assets/libs/jquery.min.js'></script>
   <script type="text/javascript">
+      var groupId = "groupId";
+      // 真实环境api
       var api = '';
+      // 模拟api
+      var mockApi = '/api';
       var script = document.createElement('script');
       script.src = './index.js?v=20160601' + Math.random();
       document.querySelectorAll('body')[0].appendChild(script)
