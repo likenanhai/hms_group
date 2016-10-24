@@ -8,7 +8,7 @@ export default {
   data() {
     return {
       isShowMore:false,
-      url:api+'/api/hotels?groupId='+this.userSelection.orderData.groupId,
+      url:api+mockApi+'/hotels?groupId='+this.userSelection.orderData.groupId,
       thisHotel:'',
     };
   },

@@ -388,7 +388,7 @@ from 'vue-weui';
 		      const ajaxparams = Common.reqString(this.FormData);//window.getEnumerableSet(this.FormData);
 					//console.log(ajaxparams);
 					//
-		      this.$http.get(api+'/api/orderPrice'+ ajaxparams)
+		      this.$http.get(api+mockApi+'/orderPrice'+ ajaxparams)
 		        .then((res) => {
 							console.log(JSON.parse(res.body));
 							let data = JSON.parse(res.body);
@@ -448,7 +448,7 @@ from 'vue-weui';
 					 _this.$dispatch('toastError', '到店时间不能小于当前时间');
 					 return;
 				 }
-				 this.$http.post(api+'/api/orders',_this.req)
+				 this.$http.post(api+mockApi+'/orders',_this.req)
 					 .then((data) => {
 						 console.log(JSON.parse(data.body));
 						 _this.$router.go('order_result')

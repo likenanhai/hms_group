@@ -186,7 +186,7 @@
           return;
         }
         const _this = this;
-        Common.resource("post",api+'/api/comments',postData,function(obj){
+        Common.resource("post",api+mockApi+'/comments',postData,function(obj){
   				_this.toastMsg('评论提交');
   			});
         // this.$http

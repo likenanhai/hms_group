@@ -345,7 +345,7 @@ const timer = (limitTime, callback) => {
 		ready() {
 			//初始化数据，
 			const _this = this;
-			Common.resource("get",api+'/api/orderDetail',this.req,function(obj){
+			Common.resource("get",api+mockApi+'/orderDetail',this.req,function(obj){
 				_this.orderDetail = obj;
 				_this.OrderDetail = obj.room;
 				_this.totalPrice = obj.actualPrice;

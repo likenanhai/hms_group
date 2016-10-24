@@ -321,7 +321,7 @@ import {
 export default {
     data() {
             return {
-                url:[api+'/api/evaluate',api+'/api/like'],
+                url:[api+mockApi+'/evaluate',api+mockApi+'/like'],
                 images: [],
                 swiper_options: {
                   pagination: '.swiper-pagination',

@@ -94,7 +94,7 @@
         const _this = this;
         const ajaxReqData = Common.reqString(ajaxData);
         //console.log(ajaxData);
-        this.$http.get(api+'/api/orders' + ajaxReqData)
+        this.$http.get(api+mockApi+'/orders' + ajaxReqData)
         .then(({ status, body }) => {
           //console.log(body);
           const data = JSON.parse(body);
