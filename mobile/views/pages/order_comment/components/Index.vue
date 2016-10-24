@@ -160,7 +160,7 @@
 
         // 组建提交数据
         const postData = {
-          orderId:this.userSelection.orderData.message.orderId,
+          orderId:this.userSelection.message.orderId,
           travelType: +this.$data.UserType+1,
           //ScoreExtend: this.$data.ScoreExtend,
           wholeScore:this.$data.ScoreExtend.TotalScore,
