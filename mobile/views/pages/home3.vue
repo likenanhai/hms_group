@@ -49,10 +49,10 @@
           <i class="fa fa-angle-right arrow"  ></i>
         </div>
         <ul class="citys" v-if="show_cities" >
-          <li><a href="">北京</a></li>
-          <li><a href="">上海</a></li>
-          <li><a href="">广州</a></li>
-          <li><a href="">深圳</a></li>
+          <li><a href="javascript:void(0);">北京</a></li>
+          <li><a href="javascript:void(0);">上海</a></li>
+          <li><a href="javascript:void(0);">广州</a></li>
+          <li><a href="javascript:void(0);">深圳</a></li>
         </ul>
         <!-- <city-list :codes="cities" :show="show_city"></city-list> -->
       </div>
@@ -80,9 +80,12 @@
               <p><span>￥</span><span>{{item.minPrice}}</span><span>起</span></p>
             </div>
           </li>
+          <btn-load-more id='btn-load-more'></btn-load-more>
         </ul>
-        <!-- </iscroll> -->
+
       </div>
+      <!-- loading -->
+      <toast type="loading" v-if="loading" ></toast>
       <!-- calendar -->
       <div class="calendar">
         <calendar-page :show-calendar.sync="showCalendar"></calendar-page>
