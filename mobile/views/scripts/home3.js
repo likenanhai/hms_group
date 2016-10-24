@@ -5,8 +5,8 @@
 import Iscroll from "../../components/Iscroll.vue";
 import Swiper from "../../components/Swiper.vue";
 import SelectDate from "../../components/Select-date.vue";
-import home1_vm from "./home1.js";
 import CityList from "../../components/city-list.vue";
+import CalendarPage from "../pages/calendarPage.vue";
 
 // 引入公共方法
 import moment from "moment";
@@ -25,10 +25,15 @@ export default {
                 options: {
                   pagination: '.swiper-pagination',
                 },
-                today: new Date().getDate(),
-                stayDay: new Date().toISOString().substr(0, 10),
-                leaveDay: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().substr(0, 10),
-                total_days: '',
+                startDate: moment().format('YYYY-MM-DD'),
+                endDate: moment().add('days',1).format('YYYY-MM-DD'),
+                neightNum: 1,
+                week:{
+                  str:['日','一','二','三','四','五','六'],
+                  start: moment().format('d'),
+                  end: moment().add('days',1).format('d'),
+                },
+                showCalendar: false,
                 show_cities: false,
                 url: {
                   home: api+'/api/home',
@@ -56,45 +61,31 @@ export default {
             };
         },
         computed: {},
+        events:{
+          getPriceDates(date){
+            this.startDate = date.selectedInfo.daysInfo[date.startDate].date;
+            this.endDate = date.selectedInfo.daysInfo[date.endDate].date;
+            this.neightNum = date.selectedInfo.daysNum - 1;
+            this.week.start = moment(this.startDate).format('d');
+            this.week.end = moment(this.endDate).format('d');
+          },
+        },
         ready() {
             var vm = this;
-            let reqHome = {groupId:this.groupId},
+            let reqHome = {},
                 reqHotels = {
-                  groupId: this.groupId,
-                  checkInDate: this.stayDay,
-                  checkOutDate: this.leaveDay
+                  checkInDate: this.startDate,
+                  checkOutDate: this.endDate
                 }
             Common.resource("get",this.url.home,reqHome,(data) => {
               vm.images = data.items.banners;
             });
             Common.resource("get",this.url.hotels,reqHotels,(data) =>{
               vm.hotel_list = data;
-            })
-            //计算入住日期
-            this.total_days = home1_vm.methods.getDays(this.stayDay, this.leaveDay);
+            });
         },
         attached() {},
         watch: {
-          stayDay(newVal) {
-            if(new Date(newVal).getTime() < new Date().getTime()){
-              this.stayDay = moment(new Date().getTime() + 10000).format("YYYY-MM-DD");
-            }
-            if(new Date(this.stayDay).getTime() >= new Date(this.leaveDay).getTime()){
-              let _leaveDay = new Date(this.stayDay).getTime() + 86400 * 1000;
-              this.leaveDay = moment(_leaveDay).format('YYYY-MM-DD');
-            }
-            this.total_days = home1_vm.methods.getDays(this.stayDay,this.leaveDay);
-          },
-          leaveDay(newVal){
-            console.log(new Date(this.stayDay).getTime());
-            console.log(new Date(newVal).getTime());
-            if(new Date(this.stayDay).getTime() >= new Date(newVal).getTime()){
-              console.log("change");
-              let _leaveDay = new Date(this.stayDay).getTime() + 86400 * 1000;
-              this.leaveDay = moment(_leaveDay).format('YYYY-MM-DD');
-            }
-            this.total_days = home1_vm.methods.getDays(this.stayDay,this.leaveDay);
-          },
         },
         methods: {
             getBanner: function(url) {
@@ -125,13 +116,11 @@ export default {
             selectHotel: function(event) {
                 const userSelection = {
                     orderData: {
-                        groupId: 'groupId',
                         hotelId: event.target.getAttribute('data-id'),
                         hotelName: event.target.getAttribute('hotelName'),
-                        checkInDate: this.stayDay,
-                        checkOutDate: this.leaveDay,
-                        night: this.total_days,
-                        userId: 'userId'
+                        checkInDate: this.startDate,
+                        checkOutDate: this.endDate,
+                        night: this.neightNum,
                     },
                 };
                 this.setOrderData(userSelection.orderData);
@@ -147,6 +136,7 @@ export default {
             Iscroll,
             Swiper,
             SelectDate,
-            CityList
+            CityList,
+            CalendarPage,
         }
 };

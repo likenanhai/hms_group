@@ -30,6 +30,11 @@ import calendarTest from './views/pages/calendarPage.vue';
 // new Vue(App).$mount().$appendTo('#app');
 Vue.config.silent = true;
 
+import utils from './components/calendar/lib/utils.js';
+// 声明全局filter
+Vue.filter('convertDateFormatDisplay', utils.filters().convertDateFormatDisplay);
+Vue.filter('convertDateFormatValue', utils.filters().convertDateFormatValue);
+
 Vue.use(Router);
 Vue.use(Resource);
 var router = new Router();

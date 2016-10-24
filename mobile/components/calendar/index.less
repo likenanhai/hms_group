@@ -2,6 +2,8 @@
  * base css
  */
 @myrem: 375/640rem;
+@selectColor:#09bb07 ;
+@selectLineColor: #9de49c;
 .vue-calendar-backdrop {
     position: absolute;
     width: 100%;
@@ -66,11 +68,11 @@
             height: 100%;
             margin-right: 0.2 * @myrem;
             a {
-                color: #2eb6a8;
+                color: @selectColor;
                 font-size: 0.30 * @myrem;
                 text-decoration: none;
                 padding: 0 * @myrem 0.20 * @myrem;
-                border: 0.02 * @myrem solid #2eb6a8;
+                border: 0.02 * @myrem solid @selectColor;
                 border-radius: 0.06 * @myrem;
             }
         }
@@ -261,12 +263,12 @@
                     }
                     &-start,
                     &-end {
-                        border-top: 0.01 * @myrem solid #2eb6a8;
-                        border-bottom: 0.01 * @myrem solid #2eb6a8;
+                        border-top: 0.01 * @myrem solid @selectColor;
+                        border-bottom: 0.01 * @myrem solid @selectColor;
                         height: 1 * @myrem!important;
                         line-height: 1 * @myrem!important;
                         color: #fff;
-                        background: #2eb6a8;
+                        background: @selectColor;
                         i:after {
                             position: absolute;
                             top: 0.2 * @myrem;
@@ -297,12 +299,12 @@
                     }
 
                     &-line {
-                        background: #e0f4f2;
-                        color: #333;
-                        // border-top: 0.01 * @myrem solid #2eb6a8;
+                        background: #9de49c;
+                        color: #fff;
+                        // border-top: 0.01 * @myrem solid @selectColor;
                         height: 1 * @myrem!important;
                         line-height: 1 * @myrem!important;
-                        // border-bottom: 0.01 * @myrem solid #2eb6a8;
+                        // border-bottom: 0.01 * @myrem solid @selectColor;
                         &:after {
                             .one-px-line;
                         }

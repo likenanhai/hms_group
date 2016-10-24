@@ -43,7 +43,7 @@ export default {
       searchbar_value:'',
       startDate: moment().format('YYYY-MM-DD'),
       endDate: moment().add('days',1).format('YYYY-MM-DD'),
-      daysNum: 1,
+      neightNum: 1,
       week: {
         str:['日','一','二','三','四','五','六'],
         start: moment().format('d'),
@@ -78,12 +78,9 @@ export default {
     getPriceDates(date){
       this.startDate = date.selectedInfo.daysInfo[date.startDate].date;
       this.endDate = date.selectedInfo.daysInfo[date.endDate].date;
-      this.daysNum = date.selectedInfo.daysNum;
+      this.neightNum = date.selectedInfo.daysNum - 1;
       this.week.start = moment(this.startDate).format('d');
       this.week.end = moment(this.endDate).format('d');
-      console.log(typeof(this.week.start));
-      console.log(date);
-
     },
   },
   methods: {
@@ -116,7 +113,7 @@ export default {
             orderData:{
               checkInDate : this.startDate,
               checkOutDate : this.endDate,
-              night : this.daysNum
+              night : this.neightNum
             },
             hotelMessages:{
               address:this.searchbar_value, //查询地址
@@ -130,7 +127,7 @@ export default {
     },
     handledialog(){
       this.dialog = false;
-      // 清空输入狂内容
+      // 清空输入框内容
     },
 
   },
